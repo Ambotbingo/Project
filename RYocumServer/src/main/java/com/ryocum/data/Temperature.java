@@ -22,7 +22,7 @@ public class Temperature implements Thermostat {
         this.id = Integer.parseInt(id);
     }
 
-    public Int getId() {
+    public int getId() {
         return id;
     }
 
