@@ -8,7 +8,7 @@ package com.ryocum.data;
  */
 public class Temperature implements Thermostat {
 
-    private Long id;
+    private int id;
     private int temp;
     private int temp2;
     private String setting;
@@ -19,14 +19,14 @@ public class Temperature implements Thermostat {
     public Temperature(int temp, int temp2, String id) {
         this.temp = temp;
         this.temp2 = temp2;
-        this.id = Long.parseLong(id);
+        this.id = Integer.parseInt(id);
     }
 
-    public Long getId() {
+    public Int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Int id) {
         this.id = id;
     }
 

@@ -6,7 +6,7 @@ import java.time.Instant;
 
 public class Report implements Thermostat {
 
-    private Long id;
+    private int id;
     private int temp;
     private Timestamp date;
 

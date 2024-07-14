@@ -20,7 +20,7 @@ public final class JDBCConnection {
     // get request based on ID
     public static final Temperature getTemp(String id) {
 
-        String select = "select * from temps where id = " + id;
+        String select = "select * from temperatures where id = " + id;
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
@@ -43,10 +43,10 @@ public final class JDBCConnection {
             ResultSet resultSet = statement.executeQuery(select);
             State state = new State();
             while (resultSet.next()) {
-                String currentState = resultSet.getString("STATE");
-                if (currentState != null) {
+                int currentState = resultSet.getInt("STATE");
+                if (currentState == 1) {
                     state.setOn(true);
-                } else {
+                } else  if (currentState == 0 ){
                     state.setOn(false);
                 }
             }
@@ -58,13 +58,13 @@ public final class JDBCConnection {
     }
 
     public static final Temperature getTemperatureSetting(String setting) {
-        String select = "select * from temps where setting = '" + setting + "'";
+        String select = "select * from temperatures where setting = '" + setting + "'";
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
             Temperature temp = new Temperature();
             while (resultSet.next()) {
-                temp.setId(resultSet.getLong("ID"));
+                temp.setId(resultSet.getInt("ID"));
                 temp.setTemp(resultSet.getInt("TEMP"));
                 temp.setTemp2(resultSet.getInt("TEMP2"));
                 temp.setSetting(resultSet.getString("SETTING"));
@@ -78,7 +78,7 @@ public final class JDBCConnection {
 
     public static final List<Temperature> getAllTemps() {
         List<Temperature> temps = new ArrayList<>();
-        String select = "select * from temps";
+        String select = "select * from temperatures";
 
         try ( Connection conn = setupConnection()) {
 
@@ -87,7 +87,7 @@ public final class JDBCConnection {
             while (resultSet.next()) {
 
                 Temperature obj = new Temperature();
-                obj.setId(resultSet.getLong("ID"));
+                obj.setId(resultSet.getInt("ID"));
                 obj.setSetting(resultSet.getString("SETTING"));
                 obj.setTemp(resultSet.getInt("TEMP"));
                 obj.setTemp2(resultSet.getInt("TEMP2"));
@@ -111,7 +111,7 @@ public final class JDBCConnection {
             while (resultSet.next()) {
 
                 Report obj = new Report();
-                obj.setId(resultSet.getLong("ID"));
+                obj.setId(resultSet.getInt("ID"));
                 obj.setTemp(resultSet.getInt("TEMP"));
                 obj.setDate(resultSet.getTimestamp("DATE"));
                 reports.add(obj);
