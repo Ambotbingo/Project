@@ -26,7 +26,7 @@ public class Temperature implements Thermostat {
         return id;
     }
 
-    public void setId(Int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
