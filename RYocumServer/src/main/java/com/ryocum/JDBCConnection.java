@@ -26,7 +26,7 @@ public final class JDBCConnection {
             ResultSet resultSet = statement.executeQuery(select);
             Temperature temp = new Temperature();
             while (resultSet.next()) {
-                temp.setId(resultSet.getLong("ID"));
+                temp.setId(resultSet.getInt("ID"));
                 temp.setTemp(resultSet.getInt("TEMP"));
             }
             return temp;
