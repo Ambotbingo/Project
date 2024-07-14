@@ -1,0 +1,225 @@
+package com.ryocum;
+
+import com.ryocum.data.Report;
+import com.ryocum.data.State;
+import com.ryocum.data.Temperature;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public final class JDBCConnection {
+
+    private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermosim";
+    private static final String ROOT = "root";
+    private static final String PASSWORD = "Benjamin12!";
+
+    private JDBCConnection() {
+    }
+
+    // get request based on ID
+    public static final Temperature getTemp(String id) {
+
+        String select = "select * from temps where id = " + id;
+        try ( Connection conn = setupConnection()) {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            Temperature temp = new Temperature();
+            while (resultSet.next()) {
+                temp.setId(resultSet.getLong("ID"));
+                temp.setTemp(resultSet.getInt("TEMP"));
+            }
+            return temp;
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+        return null;
+    }
+
+    public static final State getState() {
+        String select = "select * from state";
+        try ( Connection conn = setupConnection()) {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            State state = new State();
+            while (resultSet.next()) {
+                String currentState = resultSet.getString("STATE");
+                if (currentState != null) {
+                    state.setOn(true);
+                } else {
+                    state.setOn(false);
+                }
+            }
+            return state;
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+        return null;
+    }
+
+    public static final Temperature getTemperatureSetting(String setting) {
+        String select = "select * from temps where setting = '" + setting + "'";
+        try ( Connection conn = setupConnection()) {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            Temperature temp = new Temperature();
+            while (resultSet.next()) {
+                temp.setId(resultSet.getLong("ID"));
+                temp.setTemp(resultSet.getInt("TEMP"));
+                temp.setTemp2(resultSet.getInt("TEMP2"));
+                temp.setSetting(resultSet.getString("SETTING"));
+            }
+            return temp;
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+        return null;
+    }
+
+    public static final List<Temperature> getAllTemps() {
+        List<Temperature> temps = new ArrayList<>();
+        String select = "select * from temps";
+
+        try ( Connection conn = setupConnection()) {
+
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            while (resultSet.next()) {
+
+                Temperature obj = new Temperature();
+                obj.setId(resultSet.getLong("ID"));
+                obj.setSetting(resultSet.getString("SETTING"));
+                obj.setTemp(resultSet.getInt("TEMP"));
+                obj.setTemp2(resultSet.getInt("TEMP2"));
+                temps.add(obj);
+            }
+
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+        return temps;
+    }
+
+    public static final List<Report> getAllReports() {
+        List<Report> reports = new ArrayList<>();
+        String select = "select * from report";
+
+        try ( Connection conn = setupConnection()) {
+
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            while (resultSet.next()) {
+
+                Report obj = new Report();
+                obj.setId(resultSet.getLong("ID"));
+                obj.setTemp(resultSet.getInt("TEMP"));
+                obj.setDate(resultSet.getTimestamp("DATE"));
+                reports.add(obj);
+            }
+
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+        return reports;
+    }
+
+    public static final String addReport(Report report) {
+        String insert = "insert into report (temp, date) values ('"
+                + report.getTemp()
+                + "', '"
+                + report.getDate()
+                + "')";
+
+        try ( Connection conn = setupConnection()) {
+            Statement statement = (Statement) conn.createStatement();
+            statement.execute(insert);
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+            return "Post state Failed\n";
+        }
+
+        return "Post Report successful\n";
+    }
+
+    public static final String updateState(boolean value) {
+        String update = null;
+
+        if (value) {
+            update = "update state set state = ''";
+        } else {
+            update = "update state set state = NULL";
+        }
+
+        try ( Connection conn = setupConnection()) {
+            Statement statement = (Statement) conn.createStatement();
+            statement.execute(update);
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+            return "Update state Failed\n";
+        }
+
+        return "Post state Failed\n";
+    }
+
+    public static final String addState(State state) {
+        String insert = null;
+        if (state.isOn()) {
+            insert = "insert into state (state, date) values ('', '"
+                    + state.getDate()
+                    + "')";
+        } else {
+            insert = "insert into state (state, date) values (NULL, '"
+                    + state.getDate()
+                    + "')";
+        }
+
+        try ( Connection conn = setupConnection()) {
+            Statement statement = (Statement) conn.createStatement();
+            statement.execute(insert);
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+            return "Post state Failed\n";
+        }
+
+        return "Post state Successful\n";
+
+    }
+
+    // add a temp to the database
+    public static final String updateTemp(Temperature temp) {
+        
+        String update = "update temps set temp = " + 
+                temp.getTemp() + 
+                ", temp2 = " + 
+                temp.getTemp2() + 
+                " where id = " + 
+                temp.getId();
+
+        try ( Connection conn = setupConnection()) {
+            Statement statement = (Statement) conn.createStatement();
+            statement.execute(update);
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+            return "Post temp Failed\n";
+        }
+        return "Post temp Successful\n";
+    }
+
+    // delete temp from database
+    public static final String deleteTemp(String id) {
+        String insert = "delete from temps where id = " + id;
+        try ( Connection conn = setupConnection()) {
+            Statement statement = (Statement) conn.createStatement();
+            statement.execute(insert);
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+            return "Delete Failed\n";
+        }
+        return "Delete Successful\n";
+    }
+
+    private static final Connection setupConnection() throws SQLException {
+        return DriverManager.getConnection(DB_CONNECTION, ROOT, PASSWORD);
+    }
+
+}
