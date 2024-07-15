@@ -169,7 +169,7 @@ public final class JDBCConnection {
     public static final String AddInformation(String temp) {
         if (temp != null && temp != "") {
             String insert = "insert into temp (temp) values ('" + temp + "')";
-            try (Connection conn = ConnectionSetUp()) {
+            try (Connection conn = setupConnection()) {
                 Statement statement = (Statement) conn.createStatement();
                 statement.execute(insert);
             } catch (SQLException ex) {
