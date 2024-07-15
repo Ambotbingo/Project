@@ -53,13 +53,8 @@ public final class CurlCommandsUtil {
                     jsonResp = Boolean.toString(true);
                 }
                 jsonResp = Boolean.toString(state.isOn());
-            } else if (route.equals(REPORT)) {
-                List<Report> reports = JDBCConnection.getAllReports();
-                if (reports.isEmpty()) {
-                    return failedAttempt("The GET request has no available information.\n");
-                }
-                jsonResp = gson.toJson(reports);
-            }
+            } 
+           
 
             return newFixedLengthResponse("\n" +jsonResp + "\n");
         }
@@ -83,10 +78,10 @@ public final class CurlCommandsUtil {
 
                 try {
                     session.parseBody(new HashMap<>());
-                    String result = connection.AddInformation(session.getQueryParameterString());
+                    String result = JDBCConnection.AddInformation(session.getQueryParameterString());
                     return newFixedLengthResponse("\n" + result + "\n");
                 } catch (IOException | NanoHTTPD.ResponseException e) {
-                    return AttemptFailed();
+                    return failedAttempt("Failed to perform POST request.\n");
                 }
 
             }
