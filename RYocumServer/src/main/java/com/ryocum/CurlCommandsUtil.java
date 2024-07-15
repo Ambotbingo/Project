@@ -64,9 +64,9 @@ public final class CurlCommandsUtil {
                 jsonResp = gson.toJson(reports);
             }
 
-            return newFixedLengthResponse(jsonResp);
+            return newFixedLengthResponse("\n" +jsonResp + "\n");
         }
-        return failedAttempt("Please use a valid get url path. For example of this path is HTTP://18.217.90.61:8080/state");
+        return failedAttempt("Please use a valid get url path. For example of this path is HTTP://18.217.90.61:8080/state \n");
     }
 
     public static NanoHTTPD.Response performPost(NanoHTTPD.IHTTPSession session) {
@@ -78,7 +78,7 @@ public final class CurlCommandsUtil {
                     route);
 
             if (thermostat == null) {
-                return newFixedLengthResponse("temp or time values unsupported");
+                return newFixedLengthResponse("Temperature or time values unsupported\n");
             }
 
             // TODO: so much cleaner if used visitor pattern
@@ -92,9 +92,9 @@ public final class CurlCommandsUtil {
                 result = addReport((Report) thermostat);
             }
 
-            return newFixedLengthResponse(result);
+            return newFixedLengthResponse("\n" +result + "\n");
         } catch (IOException | NanoHTTPD.ResponseException e) {
-            return failedAttempt("unable to commit post");
+            return failedAttempt("Failed to perform POST request.\n");
         }
     }
 
@@ -137,10 +137,10 @@ public final class CurlCommandsUtil {
             return newFixedLengthResponse(result);
         } else if (route == REPORT) {
             String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
-            return newFixedLengthResponse(result);
+            return newFixedLengthResponse("\n" +result  + "\n");
         }
 
-        return failedAttempt("Unable to delete object, make sure correct route");
+        return failedAttempt("Unable to delete object, make sure correct route\n");
     }
 
     public static NanoHTTPD.Response failedAttempt(String message) {
