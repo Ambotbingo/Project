@@ -40,13 +40,13 @@ public final class CurlCommandsUtil {
                 if (param != null && !param.equals("")) {
                     Temperature temp = JDBCConnection.getTemp(param);
                     if (temp == null) {
-                        return failedAttempt("temp value was null");
+                        return failedAttempt("Temperature value was null.\n");
                     }
                     jsonResp = gson.toJson(temp);
                 } else {
                     List<Temperature> temps = JDBCConnection.getAllTemps();
                     if (temps.isEmpty()) {
-                        return failedAttempt("get request has empty results");
+                        return failedAttempt("The GET request has no available information.\n");
                     }
                     jsonResp = gson.toJson(temps);
                 }
@@ -59,14 +59,14 @@ public final class CurlCommandsUtil {
             } else if (route.equals(REPORT)) {
                 List<Report> reports = JDBCConnection.getAllReports();
                 if (reports.isEmpty()) {
-                    return failedAttempt("get request has empty results");
+                    return failedAttempt("The GET request has no available information.\n");
                 }
                 jsonResp = gson.toJson(reports);
             }
 
             return newFixedLengthResponse(jsonResp);
         }
-        return failedAttempt("improper get url path");
+        return failedAttempt("Please use a valid get url path. For example of this path is HTTP://18.217.90.61:8080/state");
     }
 
     public static NanoHTTPD.Response performPost(NanoHTTPD.IHTTPSession session) {
@@ -140,7 +140,7 @@ public final class CurlCommandsUtil {
             return newFixedLengthResponse(result);
         }
 
-        return failedAttempt("failed to delete object, make sure correct route");
+        return failedAttempt("Unable to delete object, make sure correct route");
     }
 
     public static NanoHTTPD.Response failedAttempt(String message) {
