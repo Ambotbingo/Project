@@ -25,7 +25,7 @@ public class Temperature implements Thermostat {
         return temp;
     }
 
-    public void setTemp(int temp) {
+    public void setTemp(float temp) {
         this.temp = temp;
     }    
 }

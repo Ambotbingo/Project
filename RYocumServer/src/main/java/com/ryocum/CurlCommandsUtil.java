@@ -19,9 +19,9 @@ import static com.ryocum.JDBCConnection.updateTemp;
 
 public final class CurlCommandsUtil {
 
-    private static final String STATE = "STATUS";
-    private static final String TEMP = "TEMP";
-    private static final String REPORT = "REPORT";
+    private static final String STATE = "status";
+    private static final String TEMP = "temp";
+    private static final String REPORT = "report";
 
     private CurlCommandsUtil() {
     }
@@ -63,8 +63,8 @@ public final class CurlCommandsUtil {
 
             return newFixedLengthResponse("\n" +jsonResp + "\n");
         }
-        return failedAttempt("Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/STATUS \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/STATUS\n" +
-        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/TEMP\n" + "For the report of the thermostat : HTTP://18.217.90.61:8080/REPORT\n");
+        return failedAttempt("Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/status \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/status\n" +
+        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temp\n" + "For the report of the thermostat : HTTP://18.217.90.61:8080/report\n");
     }
 
     public static NanoHTTPD.Response performPost(NanoHTTPD.IHTTPSession session) {

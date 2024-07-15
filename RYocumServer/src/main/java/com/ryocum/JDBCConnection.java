@@ -10,17 +10,17 @@ import java.util.List;
 
 public final class JDBCConnection {
 
-    private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermosim";
+    private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermostat";
     private static final String ROOT = "root";
     private static final String PASSWORD = "Benjamin12!";
 
     private JDBCConnection() {
-    }
+    }    
 
     // get request based on ID
     public static final Temperature getTemp(String id) {
 
-        String select = "select * from temperatures where id = " + id;
+        String select = "select * from temperature where id = " + id;
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
