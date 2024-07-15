@@ -166,8 +166,8 @@ public final class JDBCConnection {
     }
 
     // Add information to Database
-    public String AddInformation(String temp) {
-        if (temp != null && temp != "") {
+    public static final String AddInformation(String temp) {
+        if (temp != null && name != "") {
             String insert = "insert into temp (temp) values ('" + temp + "')";
             try (Connection conn = ConnectionSetUp()) {
                 Statement statement = (Statement) conn.createStatement();
