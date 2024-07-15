@@ -107,12 +107,7 @@ public final class CurlCommandsUtil {
             return "MORNING";
         }
     }
-
-    private static Temperature getTemperatureSetting() {
-        String timeofday = decodePeriod();
-        return JDBCConnection.getTemperatureSetting(timeofday);
-    }
-
+  
     private static String handleTemperatureChange(Report reportedTemp) {
         Temperature setting = getTemperatureSetting();
         State currentState = JDBCConnection.getState();

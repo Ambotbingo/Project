@@ -65,9 +65,7 @@ public final class JDBCConnection {
             Temperature temp = new Temperature();
             while (resultSet.next()) {
                 temp.setId(resultSet.getInt("ID"));
-                temp.setTemp(resultSet.getInt("TEMP"));
-                temp.setTemp2(resultSet.getInt("TEMP2"));
-                temp.setSetting(resultSet.getString("SETTING"));
+                temp.setTemp(resultSet.getInt("TEMP"));    
             }
             return temp;
         } catch (SQLException ex) {
@@ -87,10 +85,8 @@ public final class JDBCConnection {
             while (resultSet.next()) {
 
                 Temperature obj = new Temperature();
-                obj.setId(resultSet.getInt("ID"));
-                obj.setSetting(resultSet.getString("SETTING"));
-                obj.setTemp(resultSet.getInt("TEMP"));
-                obj.setTemp2(resultSet.getInt("TEMP2"));
+                obj.setId(resultSet.getInt("ID"));                
+                obj.setTemp(resultSet.getInt("TEMP"));              
                 temps.add(obj);
             }
 
@@ -188,10 +184,8 @@ public final class JDBCConnection {
     // add a temp to the database
     public static final String updateTemp(Temperature temp) {
         
-        String update = "update temps set temp = " + 
-                temp.getTemp() + 
-                ", temp2 = " + 
-                temp.getTemp2() + 
+        String update = "update temp set temp = " + 
+                temp.getTemp() +                 
                 " where id = " + 
                 temp.getId();
 
@@ -207,7 +201,7 @@ public final class JDBCConnection {
 
     // delete temp from database
     public static final String deleteTemp(String id) {
-        String insert = "delete from temps where id = " + id;
+        String insert = "delete from temp where id = " + id;
         try ( Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
             statement.execute(insert);
