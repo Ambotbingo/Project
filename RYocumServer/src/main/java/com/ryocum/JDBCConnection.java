@@ -143,8 +143,9 @@ public final class JDBCConnection {
     }
 
     // Add information to Database
-    public static final String AddInformation(String temp) {
-        if (temp != null && temp != "") {
+    public static final String AddInformation(String tempString) {
+        if (tempString != null && tempString!= "") {
+            float temp= Float.parseFloat(tempString);
             String insert = "insert into temp (temp) values ('" + temp + "')";
             try (Connection conn = setupConnection()) {
                 Statement statement = (Statement) conn.createStatement();
