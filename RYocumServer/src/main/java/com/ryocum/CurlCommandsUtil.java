@@ -66,7 +66,8 @@ public final class CurlCommandsUtil {
 
             return newFixedLengthResponse("\n" +jsonResp + "\n");
         }
-        return failedAttempt("Please use a valid get url path. For example of this path is HTTP://18.217.90.61:8080/state \n");
+        return failedAttempt("Please provide a valid get url path to display or update the Thermostat information. For example of this path is HTTP://18.217.90.61:8080/state \nAvailable Path include: \n For the state of the thermostat : HTTP://18.217.90.61:8080/state\n " +
+        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temps\n" + "For the report of the thermostat : HTTP://18.217.90.61:8080/report\n");
     }
 
     public static NanoHTTPD.Response performPost(NanoHTTPD.IHTTPSession session) {
