@@ -84,10 +84,7 @@ public final class CurlCommandsUtil {
             if (thermostat instanceof Temperature) {
                 result = updateTemp((Temperature) thermostat);
             } else if (thermostat instanceof State) {
-                result = addState((State) thermostat);
-            } else if (thermostat instanceof Report) {
-                handleTemperatureChange((Report) thermostat);
-                result = addReport((Report) thermostat);
+                result = addState((State) thermostat);           
             }
 
             return newFixedLengthResponse("\n" +result + "\n");
@@ -95,19 +92,6 @@ public final class CurlCommandsUtil {
             return failedAttempt("Failed to perform POST request.\n");
         }
     }
-
-    private static String decodePeriod() {
-        Calendar time = Calendar.getInstance();
-        int hour = time.get(Calendar.HOUR_OF_DAY);
-        if (hour >= 18) {
-            return "EVENING";
-        } else if (hour >= 12) {
-            return "AFTERNOON";
-        } else {
-            return "MORNING";
-        }
-    } 
-   
 
     public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {
         String route = session.getUri().replace("/", "");
@@ -137,11 +121,7 @@ public final class CurlCommandsUtil {
             return Report.buildReport(temp);
         }
         return null;
-    }
-
-    private static String cleanDecimal(String input) {
-        return cleanValue(input.replace(DEC, ""));
-    }
+    }    
 
     private static String cleanValue(String param) {
         return param.replaceAll("[^0-9]", "");
