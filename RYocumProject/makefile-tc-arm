@@ -7,7 +7,7 @@ LFLAGS=
 
 LIBS=-lcurl -lc
 
-SRC=ThermoProject.c
+SRC=project_main.c tc_state.c tc_error.c
 OBJ=$(SRC:.c=.o)
 MAIN=tcsimd
 

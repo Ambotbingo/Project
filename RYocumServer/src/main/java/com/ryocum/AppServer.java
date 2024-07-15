@@ -5,16 +5,13 @@ import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
 import java.io.IOException;
 
-/**
- * Base application class for setting up NanoHTTPD server.
- *
- * @author jhilland
- */
 public class AppServer extends NanoHTTPD {
 
     public AppServer() throws IOException {
         super(8080);
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
+        System.out.println(
+                "\nCongratulations your server is now running!\n Please open your browser to http://18.217.90.61:8080/ \n");
     }
 
     public static void main(String[] args) {
@@ -22,7 +19,7 @@ public class AppServer extends NanoHTTPD {
             // create new instance of server
             new AppServer();
         } catch (IOException ioe) {
-            System.err.println("Couldn't start server:\n" + ioe);
+            System.err.println("Something went wrong. an cannot connect to the server:\n" + ioe);
         }
     }
 

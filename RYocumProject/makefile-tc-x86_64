@@ -4,7 +4,7 @@ INCLUDES=
 LFLAGS=-L/usr/lib/x86_64-linux-gnu
 LIBS=-lcurl -lpthread
 
-SRC=ThermoProject.c
+SRC=project_main.c tc_state.c tc_error.c
 OBJ=$(SRC:.c=.o)
 MAIN=tcsimd
 

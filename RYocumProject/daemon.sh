@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DAEMON_NAME="ThermoRYocumd"
+DAEMON_NAME="tcsimd"
 
 start() {
     printf 'Starting %s: ' "$DAEMON_NAME"
