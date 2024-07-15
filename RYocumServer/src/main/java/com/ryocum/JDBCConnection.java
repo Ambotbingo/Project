@@ -57,23 +57,7 @@ public final class JDBCConnection {
         return null;
     }
 
-    public static final Temperature getTemperatureSetting(String setting) {
-        String select = "select * from temp where setting = '" + setting + "'";
-        try ( Connection conn = setupConnection()) {
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(select);
-            Temperature temp = new Temperature();
-            while (resultSet.next()) {
-                temp.setId(resultSet.getInt("ID"));
-                temp.setTemp(resultSet.getInt("TEMP"));    
-            }
-            return temp;
-        } catch (SQLException ex) {
-            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
-        }
-        return null;
-    }
-
+   
     public static final List<Temperature> getAllTemps() {
         List<Temperature> temps = new ArrayList<>();
         String select = "select * from temp";
@@ -184,7 +168,7 @@ public final class JDBCConnection {
     // add a temp to the database
     public static final String updateTemp(Temperature temp) {
         
-        String update = "update temperature set temperature = " + 
+        String update = "update temp set temp = " + 
                 temp.getTemp() +                 
                 " where id = " + 
                 temp.getId();
