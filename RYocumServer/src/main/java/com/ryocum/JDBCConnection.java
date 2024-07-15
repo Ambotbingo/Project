@@ -79,30 +79,7 @@ public final class JDBCConnection {
         }
         return temps;
     }
-
-    public static final List<Report> getAllReports() {
-        List<Report> reports = new ArrayList<>();
-        String select = "select * from report";
-
-        try ( Connection conn = setupConnection()) {
-
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(select);
-            while (resultSet.next()) {
-
-                Report obj = new Report();
-                obj.setId(resultSet.getInt("ID"));
-                obj.setTemp(resultSet.getInt("TEMP"));
-                obj.setDate(resultSet.getTimestamp("DATE"));
-                reports.add(obj);
-            }
-
-        } catch (SQLException ex) {
-            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
-        }
-        return reports;
-    }
-
+ 
     public static final String addReport(Report report) {
         String insert = "insert into report (temp, date) values ('"
                 + report.getTemp()
