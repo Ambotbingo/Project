@@ -115,10 +115,7 @@ public final class CurlCommandsUtil {
     private static Thermostat parseRouteParams(String input, String route) {
         if (route.equals(TEMP)) {
             float temp = Float.parseFloat(input);            
-            return new Temperature(temp);
-        } else if (route.equals(REPORT)) {
-            int temp = Integer.parseInt(cleanDecimal(input));
-            return Report.buildReport(temp);
+            return new Temperature(temp);        
         }
         return null;
     }    
