@@ -159,23 +159,39 @@ public final class JDBCConnection {
         return "Post is invalid when malform request is given.\n";
     }
 
-    // add a temp to the database
     public static final String updateTemp(Temperature temp) {
         
-        String update = "update temp set temp = " + 
-                temp.getTemp() +                 
-                " where id = " + 
-                temp.getId();
-
-        try ( Connection conn = setupConnection()) {
-            Statement statement = (Statement) conn.createStatement();
-            statement.execute(update);
-        } catch (SQLException ex) {
-            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
-            return "Post temp Failed\n";
-        }
-        return "Post temperature Successful\n";
+        String insert = "insert into temp (temp) values ('" + temp + "')";
+            try (Connection conn = setupConnection()) {
+                Statement statement = (Statement) conn.createStatement();
+                statement.execute(insert);
+            } catch (SQLException ex) {
+                System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+                return "Post Failed\n";
+            }
+            return "Post is successfully added to the table.\n";     
+       
     }
+
+
+
+    // add a temp to the database
+    // public static final String updateTemp(Temperature temp) {
+        
+    //     String update = "update temp set temp = " + 
+    //             temp.getTemp() +                 
+    //             " where id = " + 
+    //             temp.getId();
+
+    //     try ( Connection conn = setupConnection()) {
+    //         Statement statement = (Statement) conn.createStatement();
+    //         statement.execute(update);
+    //     } catch (SQLException ex) {
+    //         System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+    //         return "Post temp Failed\n";
+    //     }
+    //     return "Post temperature Successful\n";
+    // }
 
     // delete temp from database
     public static final String deleteTemp(String id) {
