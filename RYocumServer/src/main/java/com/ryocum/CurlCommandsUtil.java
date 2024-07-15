@@ -19,9 +19,6 @@ import static com.ryocum.JDBCConnection.updateTemp;
 
 public final class CurlCommandsUtil {
 
-    private static final String DELIM = ",";
-    private static final String DEC = ".000000";
-    private static final String TYPE_DELIM = ":";
     private static final String STATE = "STATUS";
     private static final String TEMP = "TEMP";
     private static final String REPORT = "REPORT";
@@ -149,17 +146,11 @@ public final class CurlCommandsUtil {
                 message);
     }
 
-    // temp post requirement example, temp is low, temp2 is high
-    // 1,temp,temp2 (morning)
-    // 2,temp,temp2 (afternoon)
-    // 3,temp,temp2 (evening)
+    // temperature information   
     private static Thermostat parseRouteParams(String input, String route) {
         if (route.equals(TEMP)) {
-            String[] values = input.split(DELIM);
-            String id = values[0];
-            int temp = Integer.parseInt(values[1]);
-            int temp2 = Integer.parseInt(values[2]);
-            return new Temperature(temp, temp2, id);
+            float temp = Float.parseFloat(input);            
+            return new Temperature(temp);
         } else if (route.equals(REPORT)) {
             int temp = Integer.parseInt(cleanDecimal(input));
             return Report.buildReport(temp);
