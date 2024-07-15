@@ -22,9 +22,9 @@ public final class CurlCommandsUtil {
     private static final String DELIM = ",";
     private static final String DEC = ".000000";
     private static final String TYPE_DELIM = ":";
-    private static final String STATE = "state";
-    private static final String TEMP = "temps";
-    private static final String REPORT = "report";
+    private static final String STATE = "STATUS";
+    private static final String TEMP = "TEMP";
+    private static final String REPORT = "REPORT";
 
     private CurlCommandsUtil() {
     }
@@ -66,8 +66,8 @@ public final class CurlCommandsUtil {
 
             return newFixedLengthResponse("\n" +jsonResp + "\n");
         }
-        return failedAttempt("Please provide a valid get url path to display or update the Thermostat information. For example of this path is HTTP://18.217.90.61:8080/state \nAvailable Path include: \n For the state of the thermostat : HTTP://18.217.90.61:8080/state\n " +
-        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temps\n" + "For the report of the thermostat : HTTP://18.217.90.61:8080/report\n");
+        return failedAttempt("Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/STATUS \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/STATUS\n" +
+        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/TEMP\n" + "For the report of the thermostat : HTTP://18.217.90.61:8080/REPORT\n");
     }
 
     public static NanoHTTPD.Response performPost(NanoHTTPD.IHTTPSession session) {
