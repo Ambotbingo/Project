@@ -27,7 +27,7 @@ public final class JDBCConnection {
             Temperature temp = new Temperature();
             while (resultSet.next()) {
                 temp.setId(resultSet.getInt("ID"));
-                temp.setTemp(resultSet.getInt("TEMP"));
+                temp.setTemp(resultSet.getFloat("TEMP"));
             }
             return temp;
         } catch (SQLException ex) {
@@ -76,7 +76,7 @@ public final class JDBCConnection {
 
     public static final List<Temperature> getAllTemps() {
         List<Temperature> temps = new ArrayList<>();
-        String select = "select * from temperatures";
+        String select = "select * from temperature";
 
         try ( Connection conn = setupConnection()) {
 
@@ -86,7 +86,7 @@ public final class JDBCConnection {
 
                 Temperature obj = new Temperature();
                 obj.setId(resultSet.getInt("ID"));                
-                obj.setTemp(resultSet.getInt("TEMP"));              
+                obj.setTemp(resultSet.getFloat("TEMP"));              
                 temps.add(obj);
             }
 

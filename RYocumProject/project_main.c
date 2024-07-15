@@ -231,7 +231,7 @@ static void read_temp(void)
     buffer = malloc((size + 1) * sizeof(*buffer));
     fread(buffer, size, 1, fp);
     buffer[size] = '\0';
-    send_http_request(REPORT_URL, buffer, "POST", true);
+    send_http_request(TEMP_URL, buffer, "POST", true);
 }
 
 static int write_state(char *state)
@@ -409,9 +409,12 @@ static void _run_simulation(void)
         // Is the heater on? then increase the temperature one degree.
         // Otherwise, it's getting colder!
         temp = (heater_state == ON) ? temp + 1 : temp - 1;
+        char buffer[255];
+        gcvt(temp, 6, buffer);
 
         // Write the temp to the file.
         err = tc_write_temperature(TEMP_FILENAME, temp);
+        send_http_request(TEMP_URL, buffer, "POST", true);
         if (err != OK)
             _exit_process(err);
 
