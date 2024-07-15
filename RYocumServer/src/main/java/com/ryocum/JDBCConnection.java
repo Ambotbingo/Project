@@ -20,7 +20,7 @@ public final class JDBCConnection {
     // get request based on ID
     public static final Temperature getTemp(String id) {
 
-        String select = "select * from temperature where id = " + id;
+        String select = "select * from temp where id = " + id;
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
@@ -58,7 +58,7 @@ public final class JDBCConnection {
     }
 
     public static final Temperature getTemperatureSetting(String setting) {
-        String select = "select * from temperature where setting = '" + setting + "'";
+        String select = "select * from temp where setting = '" + setting + "'";
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
@@ -76,7 +76,7 @@ public final class JDBCConnection {
 
     public static final List<Temperature> getAllTemps() {
         List<Temperature> temps = new ArrayList<>();
-        String select = "select * from temperature";
+        String select = "select * from temp";
 
         try ( Connection conn = setupConnection()) {
 
