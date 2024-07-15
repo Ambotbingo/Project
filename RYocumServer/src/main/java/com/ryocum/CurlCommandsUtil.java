@@ -78,6 +78,18 @@ public final class CurlCommandsUtil {
             if (thermostat == null) {
                 return newFixedLengthResponse("Temperature or time values unsupported\n");
             }
+            if (route.equals(TEMP))
+            {
+
+                try {
+                    session.parseBody(new HashMap<>());
+                    String result = connection.AddInformation(session.getQueryParameterString());
+                    return newFixedLengthResponse("\n" + result + "\n");
+                } catch (IOException | NanoHTTPD.ResponseException e) {
+                    return AttemptFailed();
+                }
+
+            }
 
             // TODO: so much cleaner if used visitor pattern
             String result = null;
