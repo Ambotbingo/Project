@@ -106,22 +106,8 @@ public final class CurlCommandsUtil {
         } else {
             return "MORNING";
         }
-    }
-  
-    private static String handleTemperatureChange(Report reportedTemp) {
-        Temperature setting = getTemperatureSetting();
-        State currentState = JDBCConnection.getState();
-        int rTemp = reportedTemp.getTemp();
-        if (rTemp < setting.getTemp2() && rTemp > setting.getTemp()) {
-            // noop
-        } else if (reportedTemp.getTemp() > setting.getTemp2()) {
-            return JDBCConnection.updateState(false);
-        } else if (reportedTemp.getTemp() < setting.getTemp()) {
-            return JDBCConnection.updateState(true);
-        }
-
-        return null;
-    }
+    } 
+   
 
     public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {
         String route = session.getUri().replace("/", "");
