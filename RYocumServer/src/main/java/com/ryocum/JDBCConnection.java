@@ -58,7 +58,7 @@ public final class JDBCConnection {
     }
 
     public static final Temperature getTemperatureSetting(String setting) {
-        String select = "select * from temperatures where setting = '" + setting + "'";
+        String select = "select * from temperature where setting = '" + setting + "'";
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
@@ -184,7 +184,7 @@ public final class JDBCConnection {
     // add a temp to the database
     public static final String updateTemp(Temperature temp) {
         
-        String update = "update temp set temp = " + 
+        String update = "update temperature set temperature = " + 
                 temp.getTemp() +                 
                 " where id = " + 
                 temp.getId();
@@ -196,7 +196,7 @@ public final class JDBCConnection {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
             return "Post temp Failed\n";
         }
-        return "Post temp Successful\n";
+        return "Post temperature Successful\n";
     }
 
     // delete temp from database
