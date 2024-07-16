@@ -73,21 +73,16 @@ public final class CurlCommandsUtil {
             if (thermostat == null) {
                 return newFixedLengthResponse("temp or time values unsupported");
             }
-               
-            // TODO: so much cleaner if used visitor pattern
-            String result = null;
-            if (thermostat instanceof Temperature) {
-                result = updateTemp((Temperature) thermostat);
-            } else if (thermostat instanceof State) {
-                result = addState((State) thermostat);
-            } //else if (thermostat instanceof Report) {
-               // handleTemperatureChange((Report) thermostat);
-                //result = addReport((Report) thermostat);
-           // }
-           if(route.equals(TEMP))
-           {
-            String result1 = JDBCConnection.AddInformation(session.getQueryParameterString());
-           }
+            if(route.equals(TEMP))
+            {
+             String result1 = JDBCConnection.AddInformation(session.getQueryParameterString());
+            }
+            else if (route.equals(STATE))
+            {
+                String result1 = JDBCConnection.AddInformation(session.getQueryParameterString());
+            }              
+            
+          
    
             return newFixedLengthResponse(result);
         } catch (IOException | NanoHTTPD.ResponseException e) {
