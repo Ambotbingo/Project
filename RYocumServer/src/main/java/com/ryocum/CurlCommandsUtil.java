@@ -69,25 +69,27 @@ public final class CurlCommandsUtil {
             Thermostat thermostat = parseRouteParams(
                     session.getQueryParameterString(),
                     route);
-
+   
             if (thermostat == null) {
-                return newFixedLengthResponse("Temperature or time values unsupported\n");
+                return newFixedLengthResponse("temp or time values unsupported");
             }
-            
+   
             // TODO: so much cleaner if used visitor pattern
             String result = null;
             if (thermostat instanceof Temperature) {
                 result = updateTemp((Temperature) thermostat);
             } else if (thermostat instanceof State) {
-                result = addState((State) thermostat);           
+                result = addState((State) thermostat);
+            } else if (thermostat instanceof Report) {
+                handleTemperatureChange((Report) thermostat);
+                result = addReport((Report) thermostat);
             }
-
-            return newFixedLengthResponse("\n" +result + "\n");
+   
+            return newFixedLengthResponse(result);
         } catch (IOException | NanoHTTPD.ResponseException e) {
-            return failedAttempt("Failed to perform POST request.\n");
+            return failedAttempt("unable to commit post");
         }
     }
-
     public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {
         String route = session.getUri().replace("/", "");
         if (route == TEMP) {
