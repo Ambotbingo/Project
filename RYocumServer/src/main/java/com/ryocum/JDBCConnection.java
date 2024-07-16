@@ -1,7 +1,7 @@
 package com.ryocum;
 
 import com.ryocum.data.Report;
-import com.ryocum.data.State;
+import com.ryocum.data.Status;
 import com.ryocum.data.Temperature;
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public final class JDBCConnection {
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);  
-            State state = new State();         
+            Status state = new State();         
             while (resultSet.next()) {                
                 state.setState(resultSet.getBoolean("STATE"));
                 state.setDate(resultSet.getTimestamp("TIMEDATEINFO"));                
