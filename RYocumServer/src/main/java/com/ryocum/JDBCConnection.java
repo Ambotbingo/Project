@@ -102,8 +102,19 @@ public final class JDBCConnection {
         return "Post state Failed\n";
     }
 
-    public static final String addState(State state) {
-        String insert = null;        
+    public static final String addState(String stateInString) {
+        stateInString = stateInString.toUpperCase();
+        State state;
+        if(stateInString == "ON" || stateInString == "OFF")
+         {
+            if(stateInString == "ON")
+            {
+                state.setState = true;
+            }
+            else{
+                state.setState = false;
+            }
+        String insert = "insert into state (state) values ('" + state + "')";     
         try ( Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
             statement.execute(insert);
@@ -111,6 +122,7 @@ public final class JDBCConnection {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
             return "Post state Failed\n";
         }
+    }
 
         return "Post state Successful\n";
     }

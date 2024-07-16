@@ -7,32 +7,15 @@ import java.util.Date;
 public class State implements Thermostat {
 
     // true is on, false is off
-    private boolean on = true;
-    private boolean off = false;
+    private boolean state ;
     private Timestamp date;
 
-    public static State buildState(boolean value) {
-        State state = new State();
-        if( value == true)
-        {
-        state.setOn(value);
-        }
-        else{
-            state.setOff(value);
-        }
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public boolean getState() {
         return state;
-    }
-    
-    public boolean isOn() {
-        return on;
-    }
-
-    public void setOn(boolean on) {
-        this.on = on;
-    }
-
-    public void setOff(boolean off) {
-        this.off = off;
     }
    
     public Timestamp getDate() {
