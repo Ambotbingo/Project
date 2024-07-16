@@ -89,7 +89,7 @@ public final class CurlCommandsUtil {
     }
     public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {        
         String route = session.getUri().replace("/", "");
-        if (route.equals(TEMP)) {
+        if (getRoute.equals(TEMP)) {
             String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));           
             return newFixedLengthResponse(result);
         } else if (route == REPORT) {
