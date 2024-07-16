@@ -13,6 +13,10 @@ public class State implements Thermostat {
     public State() {
     }
 
+    public State(Boolean  state) {
+        this.state = state;        
+    }
+
     public void setState(Boolean state) {
         this.state = state;
     }
