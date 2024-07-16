@@ -16,9 +16,9 @@ public class Temperature implements Thermostat {
         this.temp = temp;        
     }
 
-    //public DATETIMEINFO(Timestamp dateTimeInfo) {
-     //   this.dateTimeInfo= dateTimeInfo;        
-    //}
+    public DATETIMEINFO(Timestamp dateTimeInfo) {
+      this.dateTimeInfo= dateTimeInfo;        
+    }
 
     public int getId() {
         return id;
