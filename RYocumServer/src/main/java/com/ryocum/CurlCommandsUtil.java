@@ -13,7 +13,6 @@ import java.util.Calendar;
 
 import static fi.iki.elonen.NanoHTTPD.MIME_PLAINTEXT;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
-import static com.ryocum.JDBCConnection.AddInformation;
 import static com.ryocum.JDBCConnection.addReport;
 import static com.ryocum.JDBCConnection.addState;
 import static com.ryocum.JDBCConnection.updateTemp;
@@ -74,11 +73,10 @@ public final class CurlCommandsUtil {
             if (thermostat == null) {
                 return newFixedLengthResponse("temp or time values unsupported");
             }
-   
+               
             // TODO: so much cleaner if used visitor pattern
             String result = null;
             if (thermostat instanceof Temperature) {
-                result = AddInformation((Temperature) thermostat);
                 result = updateTemp((Temperature) thermostat);
             } else if (thermostat instanceof State) {
                 result = addState((State) thermostat);
@@ -86,6 +84,10 @@ public final class CurlCommandsUtil {
                // handleTemperatureChange((Report) thermostat);
                 //result = addReport((Report) thermostat);
            // }
+           if(route.equals(TEMP))
+           {
+            String result1 = connection.AddInformation(session.getQueryParameterString());
+           }
    
             return newFixedLengthResponse(result);
         } catch (IOException | NanoHTTPD.ResponseException e) {
