@@ -2,7 +2,7 @@ package com.ryocum;
 
 import com.google.gson.Gson;
 import com.ryocum.data.Report;
-import com.ryocum.data.State;
+import com.ryocum.data.Status;
 import com.ryocum.data.Temperature;
 import com.ryocum.data.Thermostat;
 import fi.iki.elonen.NanoHTTPD;
