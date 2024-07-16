@@ -39,16 +39,18 @@ public final class JDBCConnection {
     }
 
     public static final Status getState() {
+        List<Status> states = new ArrayList<>();
         String select = "select * from state";
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);  
-            Status state = new Status();         
-            while (resultSet.next()) {                
+                    
+            while (resultSet.next()) {  
+                Status state = new Status();               
                 state.setState(resultSet.getBoolean("STATE"));
                 state.setDate(resultSet.getTimestamp("TIMEDATEINFO"));                
             }
-            return state;
+            return states;
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
