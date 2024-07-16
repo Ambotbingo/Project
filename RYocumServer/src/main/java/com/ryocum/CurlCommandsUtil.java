@@ -51,7 +51,7 @@ public final class CurlCommandsUtil {
                 if (state == null) {
                     jsonResp = Boolean.toString(true);
                 }
-                jsonResp = Boolean.toString(state);
+                jsonResp = (state);
             } 
            
 
