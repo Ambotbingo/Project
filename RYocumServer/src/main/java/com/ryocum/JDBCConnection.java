@@ -101,15 +101,15 @@ public final class JDBCConnection {
 
     public static final String addState(String stateInString) {
         stateInString = stateInString.toUpperCase();
-        State state = new State();
+        Boolean state = false;
         if(stateInString == "ON" || stateInString == "OFF")
          {
             if(stateInString == "ON")
             {
-                state.setState = true;
+                state = true;
             }
             else{
-                state.setState = false;
+                state = false;
             }
         String insert = "insert into state (state) values ('" + state + "')";     
         try ( Connection conn = setupConnection()) {
