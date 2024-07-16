@@ -38,7 +38,7 @@ public final class JDBCConnection {
         return null;
     }
 
-    public static final Status getStates() {
+    public static final List<Status> getStates() {
         List<Status> states = new ArrayList<>();
         String select = "select * from state";
 
