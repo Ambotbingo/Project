@@ -38,12 +38,12 @@ public final class JDBCConnection {
         return null;
     }
 
-    public static final State getState() {
+    public static final Status getState() {
         String select = "select * from state";
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);  
-            Status state = new State();         
+            Status state = new Status();         
             while (resultSet.next()) {                
                 state.setState(resultSet.getBoolean("STATE"));
                 state.setDate(resultSet.getTimestamp("TIMEDATEINFO"));                
