@@ -87,10 +87,9 @@ public final class CurlCommandsUtil {
             return failedAttempt("unable to commit post");
         }
     }
-    public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {
-        session.parseBody(new HashMap<>());
+    public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {        
         String route = session.getUri().replace("/", "");
-        if (route == TEMP) {
+        if (route.equals(TEMP)) {
             String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));           
             return newFixedLengthResponse(result);
         } else if (route == REPORT) {
