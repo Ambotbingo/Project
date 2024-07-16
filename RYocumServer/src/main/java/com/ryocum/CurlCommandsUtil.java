@@ -86,7 +86,7 @@ public final class CurlCommandsUtil {
            // }
            if(route.equals(TEMP))
            {
-            String result1 = connection.AddInformation(session.getQueryParameterString());
+            String result1 = JDBCConnection.AddInformation(session.getQueryParameterString());
            }
    
             return newFixedLengthResponse(result);
