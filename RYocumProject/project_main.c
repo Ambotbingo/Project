@@ -35,11 +35,11 @@ static const char *STATE_FILENAME = "/tmp/status";
 static const char *WORKING_DIR = "/";
 
 static const long SLEEP_DELAY = 5;
+static float temp = 64;
 
 // params, move to config file
-static const char *STATE_URL = "http://18.217.90.61:8080/state";
+static const char *STATE_URL = "http://18.217.90.61:8080/status";
 static const char *TEMP_URL = "http://18.217.90.61:8080/temp";
-static const char *REPORT_URL = "http://18.217.90.61:8080/report";
 
 // set params for argp
 static char args_doc[] = "--post --url http://localhost:8000 'argument'\n-o -u http://localhost:8000 'argument'";
@@ -199,6 +199,21 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
         else if (arguments->post)
         {
             send_http_request(arguments->url, arguments->arg, "POST", true);
+            if (STATE_URL == arguments->url)
+            {               
+                //write_state(aarguments->arg);
+            }
+            else if((TEMP_URL == arguments->url))
+            {
+                float tmp = atof(arguments->arg);
+                if(  tmp != 0)
+                {
+                temp = tmp;
+                }
+                else{
+                    temp = 64;
+                }
+            }
             break;
         }
         else if (arguments->put)
@@ -284,7 +299,7 @@ static struct argp argp = {options, parse_opt, args_doc, doc};
  * If we exit the process, we want to sent information on
  * the reason for the exit to syslog, and then close
  * the log. This is a way for us to centralize cleanup
- * when we leave the daemon process.
+ * when we leave the daemon process.rg
  *
  * @param err The error code we exit under.
  */
@@ -394,14 +409,16 @@ static void _run_simulation(void)
 
     // It's a bit cold! Note we're using a float in case we want to be
     // more sophisticated with the temperature management in the future.
-    // Right now we just use a linear model.
-    float temp = 64;
+    // Right now we just use a linear model.    
 
     syslog(LOG_INFO, "beginning thermocouple simulation");
     while (true)
     {
         // Read the heater state.
-        tc_heater_state_t heater_state = OFF;
+        tc_heater_state_t heater_state = ON;
+        char str[] ="ON\n";
+        write_state(str);
+        send_http_request(STATE_URL, "ON", "POST", true);
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
         if (err != OK)
             _exit_process(err);
@@ -422,6 +439,8 @@ static void _run_simulation(void)
         sleep(SLEEP_DELAY);
     }
 }
+
+
 
 /**
  * A utility function to test for file existance.

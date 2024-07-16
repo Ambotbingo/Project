@@ -19,8 +19,7 @@ import static com.ryocum.JDBCConnection.updateTemp;
 public final class CurlCommandsUtil {
 
     private static final String STATE= "status";
-    private static final String TEMP = "temp";
-    private static final String REPORT = "report";
+    private static final String TEMP = "temp";  
 
     private CurlCommandsUtil() {
     }
@@ -55,10 +54,10 @@ public final class CurlCommandsUtil {
             } 
            
 
-            return newFixedLengthResponse("The status of the thermostat is on: \n" +jsonResp + "\n");
+            return newFixedLengthResponse("\n" +jsonResp + "\n");
         }
         return failedAttempt("Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/status \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/status\n" +
-        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temp\n" + "For the report of the thermostat : HTTP://18.217.90.61:8080/report\n");
+        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temp\n");
     }
 
     public static NanoHTTPD.Response performPost(NanoHTTPD.IHTTPSession session) {
@@ -92,11 +91,7 @@ public final class CurlCommandsUtil {
         //if (route.equals(TEMP)) {
             String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));           
             return newFixedLengthResponse(result);
-        //} else if (route == REPORT) {
-         //  String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
-         //  return newFixedLengthResponse("\n" +result  + "\n");
-       // }
-
+        
        // return failedAttempt("Unable to delete recored temperature. Make sure correct the path is correct.\n");
     }
 
@@ -122,10 +117,7 @@ public final class CurlCommandsUtil {
         if (param.contains(TEMP)) {
             return TEMP;
         } else if (param.contains(STATE)) {
-            return STATE;
-        } else if (param.contains(REPORT)) {
-            return REPORT;
-        }
+            return STATE;        
         return null;
     }
 }
