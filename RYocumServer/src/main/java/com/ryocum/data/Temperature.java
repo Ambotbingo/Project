@@ -1,7 +1,7 @@
 package com.ryocum.data;
 
 import java.sql.Timestamp;
-import java.time.zone.ZoneOffsetTransitionRule.TimeDefinition;
+//import java.time.zone.ZoneOffsetTransitionRule.TimeDefinition;
 
 public class Temperature implements Thermostat {
 
