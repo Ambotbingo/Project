@@ -70,16 +70,17 @@ public final class CurlCommandsUtil {
                     session.getQueryParameterString(),
                     route);
    
+            String result = null;
             if (thermostat == null) {
                 return newFixedLengthResponse("temp or time values unsupported");
             }
             if(route.equals(TEMP))
             {
-             String result1 = JDBCConnection.AddInformation(session.getQueryParameterString());
+             result = JDBCConnection.AddInformation(session.getQueryParameterString());
             }
             else if (route.equals(STATE))
             {
-                String result1 = JDBCConnection.AddInformation(session.getQueryParameterString());
+             result = JDBCConnection.AddInformation(session.getQueryParameterString());
             }              
             
           
