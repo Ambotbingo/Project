@@ -47,11 +47,11 @@ public final class CurlCommandsUtil {
                     jsonResp = gson.toJson(temps);
                 }
             } else if (route.equals(STATE)) {
-                State state = JDBCConnection.getState();
+                List<State> states = JDBCConnection.getState();
                 if (state == null) {
                     state = true;                  
                 }
-                jsonResp = gson.toJason(state);
+                jsonResp = gson.toJason(states);
             } 
            
 
