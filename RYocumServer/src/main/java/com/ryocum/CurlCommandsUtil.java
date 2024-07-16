@@ -13,6 +13,7 @@ import java.util.Calendar;
 
 import static fi.iki.elonen.NanoHTTPD.MIME_PLAINTEXT;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
+import static com.ryocum.JDBCConnection.AddInformation;
 import static com.ryocum.JDBCConnection.addReport;
 import static com.ryocum.JDBCConnection.addState;
 import static com.ryocum.JDBCConnection.updateTemp;
@@ -77,6 +78,7 @@ public final class CurlCommandsUtil {
             // TODO: so much cleaner if used visitor pattern
             String result = null;
             if (thermostat instanceof Temperature) {
+                result = AddInformation((Temperature) thermostat);
                 result = updateTemp((Temperature) thermostat);
             } else if (thermostat instanceof State) {
                 result = addState((State) thermostat);
