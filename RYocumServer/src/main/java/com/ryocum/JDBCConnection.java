@@ -46,8 +46,7 @@ public final class JDBCConnection {
             State state = new State();         
             while (resultSet.next()) {                
                 state.setState(resultSet.getBoolean("STATE"));
-                state.setDate(resultSet.getTimestamp("TIMEDATEINFO"));
-                
+                state.setDate(resultSet.getTimestamp("TIMEDATEINFO"));                
             }
             return state;
         } catch (SQLException ex) {
@@ -102,7 +101,7 @@ public final class JDBCConnection {
 
     public static final String addState(String stateInString) {
         stateInString = stateInString.toUpperCase();
-        State state;
+        State state = new State();
         if(stateInString == "ON" || stateInString == "OFF")
          {
             if(stateInString == "ON")
