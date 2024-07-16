@@ -8,11 +8,18 @@ public class State implements Thermostat {
 
     // true is on, false is off
     private boolean on = true;
+    private boolean off = false;
     private Timestamp date;
 
     public static State buildState(boolean value) {
         State state = new State();
+        if( value == true)
+        {
         state.setOn(value);
+        }
+        else{
+            state.setOff(value);
+        }
         return state;
     }
     
@@ -24,6 +31,10 @@ public class State implements Thermostat {
         this.on = on;
     }
 
+    public void setOff(boolean off) {
+        this.off = off;
+    }
+   
     public Timestamp getDate() {
         return date;
     }

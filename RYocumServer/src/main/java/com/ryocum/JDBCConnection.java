@@ -103,17 +103,7 @@ public final class JDBCConnection {
     }
 
     public static final String addState(State state) {
-        String insert = null;
-        if (state.isOn()) {
-            insert = "insert into state (state, date) values ('', '"
-                    + state.getDate()
-                    + "')";
-        } else {
-            insert = "insert into state (state, date) values (NULL, '"
-                    + state.getDate()
-                    + "')";
-        }
-
+        String insert = null;        
         try ( Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
             statement.execute(insert);
@@ -123,11 +113,10 @@ public final class JDBCConnection {
         }
 
         return "Post state Successful\n";
-
     }
 
     // Add information to Database
-    public static final String AddInformation(String tempString) {
+    public static final String AddTemperature(String tempString) {
         if (tempString != null && tempString!= "") {
             float temp= Float.parseFloat(tempString);
             String insert = "insert into temp (temp) values ('" + temp + "')";

@@ -18,7 +18,7 @@ import static com.ryocum.JDBCConnection.updateTemp;
 
 public final class CurlCommandsUtil {
 
-    private static final String STATE = "status";
+    private static final String STATE= "status";
     private static final String TEMP = "temp";
     private static final String REPORT = "report";
 
@@ -75,11 +75,11 @@ public final class CurlCommandsUtil {
             }
             if(route.equals(TEMP))
             {
-             result = JDBCConnection.AddInformation(session.getQueryParameterString());
+             result = JDBCConnection.AddTemperature(session.getQueryParameterString());
             }
             else if (route.equals(STATE))
             {
-             result = JDBCConnection.AddInformation(session.getQueryParameterString());
+             result = JDBCConnection.addState(session.getQueryParameterString());
             }     
             
             return newFixedLengthResponse(result);
