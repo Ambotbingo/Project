@@ -42,9 +42,9 @@ public final class JDBCConnection {
         String select = "select * from state";
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(select);           
-            while (resultSet.next()) {
-                State state = new State();
+            ResultSet resultSet = statement.executeQuery(select);  
+            State state = new State();         
+            while (resultSet.next()) {                
                 state.setState(resultSet.getBoolean("STATE"));
                 state.setDate(resultSet.getTimestamp("TIMEDATEINFO"));
                 
