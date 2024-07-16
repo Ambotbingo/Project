@@ -29,6 +29,7 @@ public final class JDBCConnection {
             while (resultSet.next()) {
                 temp.setId(resultSet.getInt("ID"));
                 temp.setTemp(resultSet.getFloat("TEMP"));
+                temp.setDate(resultSet.getTimestamp("TIMDEDATEINFO"));
             }
             return temp;
         } catch (SQLException ex) {
@@ -41,15 +42,12 @@ public final class JDBCConnection {
         String select = "select * from state";
         try ( Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(select);
-            State state = new State();
+            ResultSet resultSet = statement.executeQuery(select);           
             while (resultSet.next()) {
-                int currentState = resultSet.getInt("STATE");
-                if (currentState == 1) {
-                    state.setOn(true);
-                } else  if (currentState == 0 ){
-                    state.setOn(false);
-                }
+                State state = new State();
+                state.setState(resultSet.getBoolean("STATE"));
+                state.setDate(resultSet.getTimestamp("TIMEDATEINFO"));
+                
             }
             return state;
         } catch (SQLException ex) {
