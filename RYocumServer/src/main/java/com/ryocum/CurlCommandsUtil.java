@@ -49,13 +49,13 @@ public final class CurlCommandsUtil {
             } else if (route.equals(STATE)) {
                 State state = JDBCConnection.getState();
                 if (state == null) {
-                    jsonResp = Boolean.toString(true);
+                    jsonResp = gson.toJason(true);
                 }
-                jsonResp = Boolen.toString(state);
+                jsonResp = gson.toJason(state);
             } 
            
 
-            return newFixedLengthResponse("\n" +jsonResp + "\n");
+            return newFixedLengthResponse("The status of the thermostat is on: \n" +jsonResp + "\n");
         }
         return failedAttempt("Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/status \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/status\n" +
         "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temp\n" + "For the report of the thermostat : HTTP://18.217.90.61:8080/report\n");
