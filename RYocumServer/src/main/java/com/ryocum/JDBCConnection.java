@@ -38,10 +38,12 @@ public final class JDBCConnection {
         return null;
     }
 
-    public static final Status getState() {
+    public static final Status getStates() {
         List<Status> states = new ArrayList<>();
         String select = "select * from state";
+
         try ( Connection conn = setupConnection()) {
+            
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);  
                     
