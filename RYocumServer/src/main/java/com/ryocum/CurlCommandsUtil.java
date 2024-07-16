@@ -89,15 +89,15 @@ public final class CurlCommandsUtil {
     }
     public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {
         String route = session.getUri().replace("/", "");
-        //if (route == TEMP) {
+        if (route == TEMP) {
             String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));           
             return newFixedLengthResponse(result);
-        //} else if (route == REPORT) {
-         //   String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
-        //    return newFixedLengthResponse("\n" +result  + "\n");
-        //}
+        } else if (route == REPORT) {
+           String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
+           return newFixedLengthResponse("\n" +result  + "\n");
+        }
 
-        //return failedAttempt("Unable to delete object, make sure correct route\n");
+        return failedAttempt("Unable to delete recored temperature. Make sure correct the path is correct.\n");
     }
 
     public static NanoHTTPD.Response failedAttempt(String message) {
