@@ -49,7 +49,7 @@ public final class CurlCommandsUtil {
             } else if (route.equals(STATE)) {
                 State state = JDBCConnection.getState();
                 if (state == null) {
-                    jsonResp = gson.toJason(true);
+                    state = true;                  
                 }
                 jsonResp = gson.toJason(state);
             } 
