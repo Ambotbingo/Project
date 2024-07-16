@@ -48,7 +48,7 @@ public final class CurlCommandsUtil {
             } else if (route.equals(STATE)) {
                 List<Status> status = JDBCConnection.getStates();
                 if (status.isEmpty()) {
-                    return failedAttempt("The GET request has no available information.\n");                 
+                    return failedAttempt("The GET request has no available thermostat status information.\n");                 
                 }
                 jsonResp = gson.toJson(status);
             } 

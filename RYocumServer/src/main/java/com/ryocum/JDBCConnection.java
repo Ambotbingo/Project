@@ -105,7 +105,7 @@ public final class JDBCConnection {
     }
 
     public static final String addState(String stateInString) {
-        stateInString = stateInString.toUpperCase();
+        stateInString = stateInString.toUpperCase().Trim();
         Boolean state = false;
         if(stateInString == "ON" || stateInString == "OFF")
          {
@@ -115,8 +115,8 @@ public final class JDBCConnection {
             }
             else{
                 state = false;
-            }
-        String insert = "insert into state (state) values ('" + state + "')";     
+            }           
+        String insert = "insert into state (state) values (state)";     
         try ( Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
             statement.execute(insert);
