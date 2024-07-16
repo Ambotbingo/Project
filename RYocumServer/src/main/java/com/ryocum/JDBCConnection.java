@@ -43,14 +43,15 @@ public final class JDBCConnection {
         String select = "select * from state";
 
         try ( Connection conn = setupConnection()) {
-            
+
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);  
                     
             while (resultSet.next()) {  
-                Status state = new Status();               
-                state.setState(resultSet.getBoolean("STATE"));
-                state.setDate(resultSet.getTimestamp("TIMEDATEINFO"));                
+                Status obj = new Status();               
+                obj.setState(resultSet.getBoolean("STATE"));
+                obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));  
+                states.add(obj);              
             }
             return states;
         } catch (SQLException ex) {
