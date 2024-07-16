@@ -4,16 +4,16 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 
-public class State implements Thermostat {
+public class Status implements Thermostat {
 
     // true is on, false is off
     private Boolean state;
     private Timestamp date;
 
-    public State() {
+    public Status() {
     }
 
-    public State(Boolean  state) {
+    public Status(Boolean  state) {
         this.state = state;        
     }
 
