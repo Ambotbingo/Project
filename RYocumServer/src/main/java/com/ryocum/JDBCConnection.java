@@ -105,7 +105,7 @@ public final class JDBCConnection {
     }
 
     public static final String addState(String stateInString) {
-        stateInString = stateInString.toUpperCase().Trim();
+        //stateInString = stateInString.toUpperCase().Trim();
         Boolean state = false;
         if(stateInString == "ON" || stateInString == "OFF")
          {
