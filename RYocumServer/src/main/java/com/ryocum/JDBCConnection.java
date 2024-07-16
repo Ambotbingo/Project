@@ -72,7 +72,7 @@ public final class JDBCConnection {
                 Temperature obj = new Temperature();
                 obj.setId(resultSet.getInt("ID"));                
                 obj.setTemp(resultSet.getFloat("TEMP"));     
-                obj.setDate(resultSet.getDate("DATETIMEINFO"));          
+                obj.setDate(resultSet.getTimestamp("DATETIMEINFO"));          
                 temps.add(obj);
             }
 
