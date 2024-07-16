@@ -80,10 +80,10 @@ public final class CurlCommandsUtil {
                 result = updateTemp((Temperature) thermostat);
             } else if (thermostat instanceof State) {
                 result = addState((State) thermostat);
-            } else if (thermostat instanceof Report) {
-                handleTemperatureChange((Report) thermostat);
-                result = addReport((Report) thermostat);
-            }
+            } //else if (thermostat instanceof Report) {
+               // handleTemperatureChange((Report) thermostat);
+                //result = addReport((Report) thermostat);
+           // }
    
             return newFixedLengthResponse(result);
         } catch (IOException | NanoHTTPD.ResponseException e) {
