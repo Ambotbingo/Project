@@ -1,6 +1,7 @@
 package com.ryocum.data;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 public class State implements Thermostat {

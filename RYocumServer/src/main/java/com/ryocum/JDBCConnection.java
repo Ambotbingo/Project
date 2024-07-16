@@ -6,6 +6,7 @@ import com.ryocum.data.Temperature;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
 
 
 public final class JDBCConnection {
