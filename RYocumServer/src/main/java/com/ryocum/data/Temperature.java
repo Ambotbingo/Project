@@ -1,10 +1,13 @@
 package com.ryocum.data;
 
+import java.sql.Timestamp;
+import java.time.zone.ZoneOffsetTransitionRule.TimeDefinition;
 
 public class Temperature implements Thermostat {
 
     private int id;
     private float temp;
+    private Timestamp dateTimeInfo;
     
     public Temperature() {
     }
@@ -27,5 +30,10 @@ public class Temperature implements Thermostat {
 
     public void setTemp(float temp) {
         this.temp = temp;
-    }    
+    }  
+    
+    public void getDate(Timestamp dateTimeInfo) {
+        this.dateTimeInfo = dateTimeInfo;
+    }
+    
 }

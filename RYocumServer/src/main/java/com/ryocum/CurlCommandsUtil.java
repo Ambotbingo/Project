@@ -81,10 +81,8 @@ public final class CurlCommandsUtil {
             else if (route.equals(STATE))
             {
              result = JDBCConnection.AddInformation(session.getQueryParameterString());
-            }              
+            }     
             
-          
-   
             return newFixedLengthResponse(result);
         } catch (IOException | NanoHTTPD.ResponseException e) {
             return failedAttempt("unable to commit post");
