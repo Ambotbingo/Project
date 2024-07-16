@@ -53,11 +53,11 @@ public final class JDBCConnection {
                 obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));  
                 states.add(obj);              
             }
-            return states;
+           
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
-        return null;
+        return states;
     }
 
    
