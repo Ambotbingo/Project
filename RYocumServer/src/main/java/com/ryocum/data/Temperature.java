@@ -1,5 +1,6 @@
 package com.ryocum.data;
 
+import java.util.Date;
 import java.sql.Timestamp;
 import java.time.zone.ZoneOffsetTransitionRule.TimeDefinition;
 
