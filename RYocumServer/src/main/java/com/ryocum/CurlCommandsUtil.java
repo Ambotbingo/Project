@@ -48,10 +48,10 @@ public final class CurlCommandsUtil {
                 }
             } else if (route.equals(STATE)) {
                 List<Status> status = JDBCConnection.getStates();
-                if (states.isEmpty()) {
+                if (status.isEmpty()) {
                     return failedAttempt("The GET request has no available information.\n");                 
                 }
-                jsonResp = gson.toJson(states);
+                jsonResp = gson.toJson(status);
             } 
            
 
