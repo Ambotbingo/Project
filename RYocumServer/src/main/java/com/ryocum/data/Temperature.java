@@ -8,7 +8,7 @@ public class Temperature implements Thermostat {
 
     private int id;
     private float temp;
-    private Timestamp dateTimeInfo;
+    private Timestamp date;
     
     public Temperature() {
     }
@@ -25,10 +25,7 @@ public class Temperature implements Thermostat {
         this.id = id;
     }
 
-    public TimeStamp getDateTime() {
-        return dateTimeInfo;
-    }
-
+   
     public float getTemp() {
         return temp;
     }
@@ -37,7 +34,13 @@ public class Temperature implements Thermostat {
         this.temp = temp;
     }  
 
-    public void setDateTime(Timestamp dateTimeInfo) {
-        this.dateTimeInfo = dateTimeInfo;
-    }   
+   
+    
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
 }
