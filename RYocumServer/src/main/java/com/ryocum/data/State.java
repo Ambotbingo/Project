@@ -10,9 +10,9 @@ public class State implements Thermostat {
     private Boolean state;
     private Timestamp date;
 
-    public Temperature() {
+    public State() {
     }
-    
+
     public void setState(Boolean state) {
         this.state = state;
     }
