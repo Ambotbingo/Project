@@ -97,7 +97,7 @@ public final class CurlCommandsUtil {
         //    return newFixedLengthResponse("\n" +result  + "\n");
         //}
 
-        return failedAttempt("Unable to delete object, make sure correct route\n");
+        //return failedAttempt("Unable to delete object, make sure correct route\n");
     }
 
     public static NanoHTTPD.Response failedAttempt(String message) {
