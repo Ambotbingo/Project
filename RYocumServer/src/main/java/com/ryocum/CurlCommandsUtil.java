@@ -94,7 +94,7 @@ public final class CurlCommandsUtil {
             return newFixedLengthResponse(result);
         //} else if (route == REPORT) {
          //  String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
-           return newFixedLengthResponse("\n" +result  + "\n");
+         //  return newFixedLengthResponse("\n" +result  + "\n");
        // }
 
        // return failedAttempt("Unable to delete recored temperature. Make sure correct the path is correct.\n");
