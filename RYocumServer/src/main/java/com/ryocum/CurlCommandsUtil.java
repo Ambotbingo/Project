@@ -13,7 +13,6 @@ import java.util.Calendar;
 
 import static fi.iki.elonen.NanoHTTPD.MIME_PLAINTEXT;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
-import static com.ryocum.JDBCConnection.addReport;
 import static com.ryocum.JDBCConnection.addState;
 import static com.ryocum.JDBCConnection.updateTemp;
 
@@ -91,7 +90,7 @@ public final class CurlCommandsUtil {
     public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {
         String route = session.getUri().replace("/", "");
         if (route == TEMP) {
-            String result = connection.DeleteInfo(getIndex(session.getUri()));            
+            String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));           
             return newFixedLengthResponse(result);
         } else if (route == REPORT) {
             String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
