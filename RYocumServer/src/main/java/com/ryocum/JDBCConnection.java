@@ -49,7 +49,7 @@ public final class JDBCConnection {
                     
             while (resultSet.next()) {  
                 Status obj = new Status();               
-                obj.setState(resultSet.getBoolean("STATE"));
+                obj.setState(resultSet.getString("STATE"));
                 obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));  
                 states.add(obj);              
             }
@@ -105,19 +105,8 @@ public final class JDBCConnection {
     }
 
     public static final String addState(String stateInString) {
-        stateInString = stateInString.toUpperCase().Trim();
-        Boolean state = false;
-        if(stateInString == "ON" || stateInString == "OFF")
-         {
-            if(stateInString == "ON")
-            {
-                state = true;
-            }
-            else{
-                state = false;
-            }
-           
-        String insert = "insert into state (state) values (state)";     
+        stateInString = stateInString.toUpperCase().trimrim();        
+        String insert = "insert into state (state) values ('" + stateInString + "')";     
         try ( Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
             statement.execute(insert);
@@ -125,7 +114,7 @@ public final class JDBCConnection {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
             return "Post state Failed\n";
         }
-    }
+    
 
         return "Post state Successful\n";
     }
