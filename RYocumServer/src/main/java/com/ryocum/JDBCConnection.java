@@ -105,7 +105,7 @@ public final class JDBCConnection {
     }
 
     public static final String addState(String stateInString) {
-        stateInString = stateInString.toUpperCase().trimrim();        
+        stateInString = stateInString.toUpperCase().trim();        
         String insert = "insert into state (state) values ('" + stateInString + "')";     
         try ( Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
