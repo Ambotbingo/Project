@@ -263,39 +263,22 @@ static int write_state(char *state)
     return OK;
 }
 
-// handle curl request to know if system should be on or off
-static void handle_state_get(void)
-{
-    // get commands from web server
-   char *state = send_http_request(STATE_URL, NULL, "GET", false);
-   if (strcmp(state, "true") == 0)
-    {
-        write_state("ON");
-   }
-   else if (strcmp(state, "false") == 0)
-   {
-        write_state("OFF");
-   }
-
- //   chunk.response = NULL;
-  //  chunk.size = NULL;
-}
-
 static void handle_state()
 {
     char *state = send_http_request(STATE_URL, NULL, "GET", false);
     
-    if (state == ON || state == "ON")
+    if (state == ON || state == "ON" || state == 0)
     {
         write_state("ON");
     }
-    else if (state == OFF || state == "OFF")
+    else if (state == OFF || state == "OFF" || state == 1)
     {
          write_state("OFF");
     }
     else 
     {
        write_state("ON");
+       send_http_request(STATE_URL, "ON", "POST", false);
     }
     
 }
