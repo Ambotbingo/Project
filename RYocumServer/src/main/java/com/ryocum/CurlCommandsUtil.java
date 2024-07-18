@@ -18,8 +18,8 @@ import static com.ryocum.JDBCConnection.updateTemp;
 
 public final class CurlCommandsUtil {
 
-    private static final String STATE= "status";
-    private static final String TEMP = "temp";  
+    private static final String STATE = "status";
+    private static final String TEMP = "temp";
 
     private CurlCommandsUtil() {
     }
@@ -45,50 +45,51 @@ public final class CurlCommandsUtil {
                     }
                     jsonResp = gson.toJson(temps);
                 }
-            } else if (route.equals(STATE)) {                
+            } else if (route.equals(STATE)) {
                 if (param != null && !param.equals("")) {
                     Status status = JDBCConnection.getState();
                     if (status == null) {
-                    return failedAttempt("The GET request has no available thermostat status information.\n");     
-                    }            
+                        return failedAttempt("The GET request has no available thermostat status information.\n");
+                    }
+
+                    jsonResp = gson.toJson(status.getState());
                 }
-                jsonResp = gson.toJson(status.getState());
-            } 
-           
+            }
 
             return newFixedLengthResponse(jsonResp);
         }
-        return failedAttempt("Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/status \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/status\n" +
-        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temp\n");
+        return failedAttempt(
+                "Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/status \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/status\n"
+                        +
+                        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temp\n");
     }
 
     public static NanoHTTPD.Response performPost(NanoHTTPD.IHTTPSession session) {
         try {
             session.parseBody(new HashMap<>());
-            String route = session.getUri().replace("/", "");   
+            String route = session.getUri().replace("/", "");
             String result = null;
-           
-            if(route.equals(TEMP))
-            {
-             result = JDBCConnection.AddTemperature(session.getQueryParameterString());
+
+            if (route.equals(TEMP)) {
+                result = JDBCConnection.AddTemperature(session.getQueryParameterString());
+            } else if (route.equals(STATE)) {
+                result = JDBCConnection.updateState(session.getQueryParameterString());
             }
-            else if (route.equals(STATE))
-            {
-             result = JDBCConnection.updateState(session.getQueryParameterString());
-            }     
-            
+
             return newFixedLengthResponse(result);
         } catch (IOException | NanoHTTPD.ResponseException e) {
             return failedAttempt("unable to commit post");
         }
     }
-    public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {        
+
+    public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {
         String route = session.getUri().replace("/", "");
-        //if (route.equals(TEMP)) {
-            String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));           
-            return newFixedLengthResponse(result);
-        
-       // return failedAttempt("Unable to delete recored temperature. Make sure correct the path is correct.\n");
+        // if (route.equals(TEMP)) {
+        String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
+        return newFixedLengthResponse(result);
+
+        // return failedAttempt("Unable to delete recored temperature. Make sure correct
+        // the path is correct.\n");
     }
 
     public static NanoHTTPD.Response failedAttempt(String message) {
@@ -96,14 +97,14 @@ public final class CurlCommandsUtil {
                 message);
     }
 
-    // temperature information   
+    // temperature information
     private static Thermostat parseRouteParams(String input, String route) {
         if (route.equals(TEMP)) {
-            float temp = Float.parseFloat(input);            
-            return new Temperature(temp);        
+            float temp = Float.parseFloat(input);
+            return new Temperature(temp);
         }
         return null;
-    }    
+    }
 
     private static String cleanValue(String param) {
         return param.replaceAll("[^0-9]", "");
