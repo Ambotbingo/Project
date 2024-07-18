@@ -49,11 +49,10 @@ public final class CurlCommandsUtil {
             } else if (route.equals(STATE)) {
                 if (param != null && !param.equals("")) {
                     stat = JDBCConnection.getState();
-                    if (status == null) {
+                    if (stat == null) {
                         return failedAttempt("The GET request has no available thermostat status information.\n");
-                    }
-                    String  state = status.getState();
-                    jsonResp = gson.toJson(status.getState());
+                    }                   
+                    jsonResp = gson.toJson(stat.getState());
                 }
                 //return newFixedLengthResponse("Empty Status");
             }
