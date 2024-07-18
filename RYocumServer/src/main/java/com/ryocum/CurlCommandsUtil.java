@@ -56,10 +56,11 @@ public final class CurlCommandsUtil {
                         return failedAttempt("The GET request has no available thermostat status information.\n");
                     }                   
                     jsonResp = gson.toJson(stat.getState());
+                    String currentStat = stat.getState();
+                    return newFixedLengthResponse(currentStat);
                 }
-                //return newFixedLengthResponse("Empty Status");
-                String currentStat = stat.getState();
-                return newFixedLengthResponse(currentStat);
+                return newFixedLengthResponse("Unknown thermostat status!");
+                
             }
             return newFixedLengthResponse("Please provide a correct path.");
         }
