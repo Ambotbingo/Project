@@ -6,7 +6,6 @@ import com.ryocum.data.Temperature;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Timestamp;
 
 public final class JDBCConnection {
 
@@ -43,11 +42,17 @@ public final class JDBCConnection {
         try (Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
+            Status obj = new Status();
             while (resultSet.next()) {
-                Status obj = new Status();
-                obj.setId(resultSet.getInt("ID"));
-                return state = obj.setState(resultSet.getString("STATUS"));                
+                String currentState = resultSet.getString("STATE");
+                
+                if (currentState != null) {
+                    state.setState("ON");
+                } else {
+                    state.setSte("OFF");
+                }               
             }
+            return state;
 
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());

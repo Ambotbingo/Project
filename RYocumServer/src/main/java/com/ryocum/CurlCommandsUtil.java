@@ -50,7 +50,7 @@ public final class CurlCommandsUtil {
                 if (status.isEmpty()) {
                     return failedAttempt("The GET request has no available thermostat status information.\n");                 
                 }
-                jsonResp = gson.toJson(status);
+                //jsonResp = gson.toJson(status);
             } 
            
 
