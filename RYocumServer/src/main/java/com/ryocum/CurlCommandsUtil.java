@@ -39,28 +39,24 @@ public final class CurlCommandsUtil {
                         return failedAttempt("Temperature value was null.\n");
                     }
                     jsonResp = gson.toJson(temp);
-                    return newFixedLengthResponse(jsonResp );
+                    return newFixedLengthResponse(jsonResp);
                 } else {
                     List<Temperature> temps = JDBCConnection.getAllTemps();
                     if (temps.isEmpty()) {
                         return failedAttempt("The GET request has no available information.\n");
                     }
                     jsonResp = gson.toJson(temps);
-                    return newFixedLengthResponse(jsonResp );
-                    
+                    return newFixedLengthResponse(jsonResp);
+
                 }
             } else if (route.equals(STATE)) {
-                if (param != null && !param.equals("")) {
-                    stat = JDBCConnection.getState();
-                    if (stat == null) {
-                        return failedAttempt("The GET request has no available thermostat status information.\n");
-                    }                   
-                    jsonResp = gson.toJson(stat.getState());
-                    String currentStat = stat.getState();
-                    return newFixedLengthResponse(currentStat);
+                stat = JDBCConnection.getState();
+                if (stat == null) {
+                    return failedAttempt("The GET request has no available thermostat status information.\n");
                 }
-                return newFixedLengthResponse("Unknown thermostat status!");
-                
+                jsonResp = gson.toJson(stat.getState());
+                String currentStat = stat.getState();
+                return newFixedLengthResponse(currentStat);
             }
             return newFixedLengthResponse("Please provide a correct path.");
         }
