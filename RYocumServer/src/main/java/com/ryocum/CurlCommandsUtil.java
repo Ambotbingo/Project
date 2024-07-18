@@ -56,8 +56,8 @@ public final class CurlCommandsUtil {
                 }
                 //return newFixedLengthResponse("Empty Status");
             }
-
-            return newFixedLengthResponse(stat);
+            String currentStat = stat.getState();
+            return newFixedLengthResponse(currentStat);
         }
         return failedAttempt(
                 "Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/status \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/status\n"
