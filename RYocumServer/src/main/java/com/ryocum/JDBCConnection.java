@@ -49,7 +49,7 @@ public final class JDBCConnection {
                 if (currentState != null) {
                     state.setState("ON");
                 } else {
-                    state.setSte("OFF");
+                    state.setState("OFF");
                 }               
             }
             return state;
