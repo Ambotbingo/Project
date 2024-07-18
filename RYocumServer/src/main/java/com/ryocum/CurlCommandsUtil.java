@@ -54,6 +54,7 @@ public final class CurlCommandsUtil {
 
                     jsonResp = gson.toJson(status.getState());
                 }
+                jsonResp = gson.toJson(status.getState());
             }
 
             return newFixedLengthResponse(jsonResp);
