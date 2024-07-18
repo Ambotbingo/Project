@@ -69,9 +69,9 @@ public final class CurlCommandsUtil {
                     route);
    
             String result = null;
-            if (thermostat == null) {
-                return newFixedLengthResponse("temp or time values unsupported");
-            }
+           // if (thermostat == null) {
+             //   return newFixedLengthResponse("temp or time values unsupported");
+            //}
             if(route.equals(TEMP))
             {
              result = JDBCConnection.AddTemperature(session.getQueryParameterString());
