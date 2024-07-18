@@ -39,12 +39,15 @@ public final class CurlCommandsUtil {
                         return failedAttempt("Temperature value was null.\n");
                     }
                     jsonResp = gson.toJson(temp);
+                    return newFixedLengthResponse(jsonResp );
                 } else {
                     List<Temperature> temps = JDBCConnection.getAllTemps();
                     if (temps.isEmpty()) {
                         return failedAttempt("The GET request has no available information.\n");
                     }
                     jsonResp = gson.toJson(temps);
+                    return newFixedLengthResponse(jsonResp );
+                    
                 }
             } else if (route.equals(STATE)) {
                 if (param != null && !param.equals("")) {
@@ -55,9 +58,10 @@ public final class CurlCommandsUtil {
                     jsonResp = gson.toJson(stat.getState());
                 }
                 //return newFixedLengthResponse("Empty Status");
+                String currentStat = stat.getState();
+                return newFixedLengthResponse(currentStat);
             }
-            String currentStat = "ON";
-            return newFixedLengthResponse(currentStat);
+            return newFixedLengthResponse("Please provide a correct path.");
         }
         return failedAttempt(
                 "Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/status \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/status\n"
