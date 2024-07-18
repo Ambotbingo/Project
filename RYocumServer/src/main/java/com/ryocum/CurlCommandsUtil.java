@@ -45,10 +45,12 @@ public final class CurlCommandsUtil {
                     }
                     jsonResp = gson.toJson(temps);
                 }
-            } else if (route.equals(STATE)) {
-                Status status = JDBCConnection.getState();
-                if (status.isEmpty()) {
-                    return failedAttempt("The GET request has no available thermostat status information.\n");                 
+            } else if (route.equals(STATE)) {                
+                if (param != null && !param.equals("")) {
+                    Status status = JDBCConnection.getState();
+                    if (status == null) {
+                    return failedAttempt("The GET request has no available thermostat status information.\n");     
+                    }            
                 }
                 jsonResp = gson.toJson(status.getState());
             } 
