@@ -29,6 +29,7 @@ public final class CurlCommandsUtil {
         String route = getRoute(session.getUri());
         String param = cleanValue(session.getUri());
         Gson gson = new Gson();
+        Status stat = new Status();
 
         if (route != null) {
             if (route.equals(TEMP)) {
@@ -47,17 +48,17 @@ public final class CurlCommandsUtil {
                 }
             } else if (route.equals(STATE)) {
                 if (param != null && !param.equals("")) {
-                    Status status = JDBCConnection.getState();
+                    stat = JDBCConnection.getState();
                     if (status == null) {
                         return failedAttempt("The GET request has no available thermostat status information.\n");
                     }
                     String  state = status.getState();
-                    jsonResp = gson.toJson(state);
+                    jsonResp = gson.toJson(status.getState());
                 }
                 //return newFixedLengthResponse("Empty Status");
             }
 
-            return newFixedLengthResponse(jsonResp);
+            return newFixedLengthResponse(stat);
         }
         return failedAttempt(
                 "Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/status \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/status\n"
