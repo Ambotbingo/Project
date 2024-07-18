@@ -36,7 +36,7 @@ public final class JDBCConnection {
         return null;
     }
 
-    public static final String getState() {  
+    public static final Status getState() {  
 
         String select = "select * from state";        
         try (Connection conn = setupConnection()) {
