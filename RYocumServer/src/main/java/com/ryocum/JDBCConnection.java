@@ -49,9 +49,9 @@ public final class JDBCConnection {
                     
             while (resultSet.next()) {  
                 Status obj = new Status(); 
-                obj.setState(resultSet.getIString("ID"));              
+                obj.setState(resultSet.getInt("ID"));              
                 obj.setState(resultSet.getString("STATUS"));
-                //obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));  
+                obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));  
                 states.add(obj);              
             }
            
