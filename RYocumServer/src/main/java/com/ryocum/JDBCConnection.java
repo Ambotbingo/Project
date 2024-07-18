@@ -107,7 +107,7 @@ public final class JDBCConnection {
         if (stateInString != null && stateInString != "") {
             // stateInString = stateInString.toUpperCase().trim();
             //String insert = "insert into state (status) values ('" + stateInString + "')";
-            String insert = "update state SET status = '"+ stateInString + "'), where id = 1";
+            String insert = "update state SET status = '"+ stateInString + "'";
             try (Connection conn = setupConnection()) {
                 Statement statement = (Statement) conn.createStatement();
                 statement.execute(insert);
