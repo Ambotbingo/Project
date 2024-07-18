@@ -56,7 +56,7 @@ public final class CurlCommandsUtil {
                 }
                 //return newFixedLengthResponse("Empty Status");
             }
-            String currentStat = stat.getState();
+            String currentStat = "ON";
             return newFixedLengthResponse(currentStat);
         }
         return failedAttempt(
