@@ -47,12 +47,13 @@ public final class JDBCConnection {
                 String currentState = resultSet.getString("STATE");
                 
                 if (currentState != null) {
-                    state.setState("ON");
+                    return currentState; 
                 } else {
-                    state.setState("OFF");
+                    obj.setState("OFF");
+                    return state;
                 }               
             }
-            return state;
+            
 
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
