@@ -24,10 +24,10 @@
 #include "tc_error.h"
 #include "tc_state.h"
 
-#define NO_ARG          0
-#define OK              0
-#define ERR_WTF         9
-#define REQ_ERR         11
+#define NO_ARG 0
+#define OK 0
+#define ERR_WTF 9
+#define REQ_ERR 11
 
 static const char *DAEMON_NAME = "tcsimd";
 static const char *TEMP_FILENAME = "/tmp/temp";
@@ -44,7 +44,6 @@ static const char *TEMP_URL = "http://18.217.90.61:8080/temp";
 // set params for argp
 static char args_doc[] = "--post --url http://localhost:8000 'argument'\n-o -u http://localhost:8000 'argument'";
 static char doc[] = "Always provide a url or valid http for each command";
-
 
 // arguments will be used for storing values from command line
 struct Arguments
@@ -200,21 +199,6 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
         else if (arguments->post)
         {
             send_http_request(arguments->url, arguments->arg, "POST", true);
-            if (STATE_URL == arguments->url)
-            {               
-                //write_state(aarguments->arg);
-            }
-            else if((TEMP_URL == arguments->url))
-            {
-                float tmp = atof(arguments->arg);
-                if(  tmp != 0)
-                {
-                temp = tmp;
-                }
-                else{
-                    temp = 64;
-                }
-            }
             break;
         }
         else if (arguments->put)
@@ -258,7 +242,7 @@ static int write_state(char *state)
         printf("unable to open file for writing\n");
         return ERR_WTF;
     }
-    fputs(state, fp);    
+    fputs(state, fp);
     fclose(fp);
     return OK;
 }
@@ -266,21 +250,22 @@ static int write_state(char *state)
 static void handle_state()
 {
     char *state = send_http_request(STATE_URL, NULL, "GET", false);
-    
+
     if (state == ON || state == "ON" || state == 0)
     {
         write_state("ON");
+        send_http_request(STATE_URL, "ON", "POST", true);
     }
     else if (state == OFF || state == "OFF" || state == 1)
     {
-         write_state("OFF");
+        write_state("OFF");
+        send_http_request(STATE_URL, "OFF", "POST", true);
     }
-    else 
+    else
     {
-       write_state("ON");
-       send_http_request(STATE_URL, "ON", "POST", false);
+        write_state("ON");
+        send_http_request(STATE_URL, "ON", "POST", true);
     }
-    
 }
 
 static struct argp argp = {options, parse_opt, args_doc, doc};
@@ -399,14 +384,14 @@ static void _run_simulation(void)
 
     // It's a bit cold! Note we're using a float in case we want to be
     // more sophisticated with the temperature management in the future.
-    // Right now we just use a linear model.    
-    tc_heater_state_t heater_state = OFF;  
+    // Right now we just use a linear model.
+    tc_heater_state_t heater_state = OFF;
     syslog(LOG_INFO, "beginning thermocouple simulation");
     while (true)
-    {       
+    {
         handle_state();
-        // Read the heater state.        
-        send_http_request(STATE_URL, &heater_state, "POST", true);
+        // Read the heater state.
+        // send_http_request(STATE_URL, &heater_state, "POST", true);
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
         if (err != OK)
             _exit_process(err);
@@ -416,7 +401,7 @@ static void _run_simulation(void)
         temp = (heater_state == ON) ? temp + 1 : temp - 1;
         char buffer[255];
 
-        //converts float to string and storing it to the variable buffer
+        // converts float to string and storing it to the variable buffer
         gcvt(temp, 6, buffer);
 
         // Write the temp to the file.
@@ -429,8 +414,6 @@ static void _run_simulation(void)
         sleep(SLEEP_DELAY);
     }
 }
-
-
 
 /**
  * A utility function to test for file existance.
@@ -515,5 +498,5 @@ int main(int argc, char **argv)
     return ERR_WTF;
 
     // If we get here, something weird has happened.
-   // return OK;
+    // return OK;
 }
