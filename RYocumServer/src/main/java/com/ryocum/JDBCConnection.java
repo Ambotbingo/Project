@@ -52,7 +52,7 @@ public final class JDBCConnection {
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
-        return states;
+        return state;
     }
 
     public static final List<Temperature> getAllTemps() {
