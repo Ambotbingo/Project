@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
 
-
 public final class JDBCConnection {
 
     private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermostat";
@@ -16,13 +15,13 @@ public final class JDBCConnection {
     private static final String PASSWORD = "Benjamin12!";
 
     private JDBCConnection() {
-    }    
+    }
 
     // get request based on ID
     public static final Temperature getTemp(String id) {
 
         String select = "select * from temp where id = " + id;
-        try ( Connection conn = setupConnection()) {
+        try (Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
             Temperature temp = new Temperature();
@@ -42,40 +41,39 @@ public final class JDBCConnection {
         List<Status> states = new ArrayList<>();
         String select = "select * from state";
 
-        try ( Connection conn = setupConnection()) {
+        try (Connection conn = setupConnection()) {
 
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(select);  
-                    
-            while (resultSet.next()) {  
-                Status obj = new Status(); 
-                obj.setId(resultSet.getInt("ID"));              
+            ResultSet resultSet = statement.executeQuery(select);
+
+            while (resultSet.next()) {
+                Status obj = new Status();
+                obj.setId(resultSet.getInt("ID"));
                 obj.setState(resultSet.getString("STATUS"));
-                obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));  
-                states.add(obj);              
+                obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));
+                states.add(obj);
             }
-           
+
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
         return states;
     }
 
-   
     public static final List<Temperature> getAllTemps() {
         List<Temperature> temps = new ArrayList<>();
         String select = "select * from temp";
 
-        try ( Connection conn = setupConnection()) {
+        try (Connection conn = setupConnection()) {
 
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
             while (resultSet.next()) {
 
                 Temperature obj = new Temperature();
-                obj.setId(resultSet.getInt("ID"));                
-                obj.setTemp(resultSet.getFloat("TEMP"));     
-                obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));          
+                obj.setId(resultSet.getInt("ID"));
+                obj.setTemp(resultSet.getFloat("TEMP"));
+                obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));
                 temps.add(obj);
             }
 
@@ -83,8 +81,8 @@ public final class JDBCConnection {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
         return temps;
-    } 
-    
+    }
+
     public static final String updateState(boolean value) {
         String update = null;
 
@@ -94,7 +92,7 @@ public final class JDBCConnection {
             update = "update state set status = NULL";
         }
 
-        try ( Connection conn = setupConnection()) {
+        try (Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
             statement.execute(update);
         } catch (SQLException ex) {
@@ -106,24 +104,26 @@ public final class JDBCConnection {
     }
 
     public static final String addState(String stateInString) {
-        //stateInString = stateInString.toUpperCase().trim();        
-        String insert = "insert into state (status) values ('" + stateInString + "')";     
-        try ( Connection conn = setupConnection()) {
-            Statement statement = (Statement) conn.createStatement();
-            statement.execute(insert);
-        } catch (SQLException ex) {
-            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
-            return "Post state Failed\n";
-        }
-    
+        if (stateInString != null && stateInString != "") {
+            // stateInString = stateInString.toUpperCase().trim();
+            String insert = "insert into state (status) values ('" + stateInString + "')";
+            try (Connection conn = setupConnection()) {
+                Statement statement = (Statement) conn.createStatement();
+                statement.execute(insert);
+            } catch (SQLException ex) {
+                System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+                return "Post state Failed\n";
+            }
 
-        return "Post state Successful\n";
+            return "Post is successfully added to the table.\n";
+        }
+        return "Post is invalid when malform request is given.\n";
     }
 
     // Add information to Database
     public static final String AddTemperature(String tempString) {
-        if (tempString != null && tempString!= "") {
-            float temp= Float.parseFloat(tempString);
+        if (tempString != null && tempString != "") {
+            float temp = Float.parseFloat(tempString);
             String insert = "insert into temp (temp) values ('" + temp + "')";
             try (Connection conn = setupConnection()) {
                 Statement statement = (Statement) conn.createStatement();
@@ -138,24 +138,23 @@ public final class JDBCConnection {
     }
 
     public static final String updateTemp(Temperature temp) {
-        
+
         String insert = "insert into temp (temp) values ('" + temp + "')";
-            try (Connection conn = setupConnection()) {
-                Statement statement = (Statement) conn.createStatement();
-                statement.execute(insert);
-            } catch (SQLException ex) {
-                System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
-                return "Post Failed\n";
-            }
-            return "Post is successfully added to the table.\n";     
-       
+        try (Connection conn = setupConnection()) {
+            Statement statement = (Statement) conn.createStatement();
+            statement.execute(insert);
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+            return "Post Failed\n";
+        }
+        return "Post is successfully added to the table.\n";
+
     }
-    
 
     // delete temp from database
     public static final String deleteTemp(String id) {
         String insert = "delete from temp where id = " + id;
-        try ( Connection conn = setupConnection()) {
+        try (Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
             statement.execute(insert);
         } catch (SQLException ex) {
