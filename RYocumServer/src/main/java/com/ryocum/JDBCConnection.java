@@ -89,9 +89,9 @@ public final class JDBCConnection {
         String update = null;
 
         if (value) {
-            update = "update state set state = ''";
+            update = "update state set status = ''";
         } else {
-            update = "update state set state = NULL";
+            update = "update state set status = NULL";
         }
 
         try ( Connection conn = setupConnection()) {
@@ -107,7 +107,7 @@ public final class JDBCConnection {
 
     public static final String addState(String stateInString) {
         stateInString = stateInString.toUpperCase().trim();        
-        String insert = "insert into state (state) values ('" + stateInString + "')";     
+        String insert = "insert into state (status) values ('" + stateInString + "')";     
         try ( Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
             statement.execute(insert);
