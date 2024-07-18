@@ -37,21 +37,16 @@ public final class JDBCConnection {
         return null;
     }
 
-    public static final List<Status> getStates() {
-        List<Status> states = new ArrayList<>();
+    public static final String getState() {        
         String select = "select * from state";
-
+        String state = null;
         try (Connection conn = setupConnection()) {
-
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
-
             while (resultSet.next()) {
                 Status obj = new Status();
                 obj.setId(resultSet.getInt("ID"));
-                obj.setState(resultSet.getString("STATUS"));
-                obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));
-                states.add(obj);
+                return state = obj.setState(resultSet.getString("STATUS"));                
             }
 
         } catch (SQLException ex) {
@@ -81,29 +76,10 @@ public final class JDBCConnection {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
         return temps;
-    }
+    }    
 
-    public static final String updateState(boolean value) {
-        String update = null;
-
-        if (value) {
-            update = "update state set status = ''";
-        } else {
-            update = "update state set status = NULL";
-        }
-
-        try (Connection conn = setupConnection()) {
-            Statement statement = (Statement) conn.createStatement();
-            statement.execute(update);
-        } catch (SQLException ex) {
-            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
-            return "Update state Failed\n";
-        }
-
-        return "Post state Failed\n";
-    }
-
-    public static final String addState(String stateInString) {
+    //updating the state table
+    public static final String updateState(String stateInString) {
         if (stateInString != null && stateInString != "") {
             // stateInString = stateInString.toUpperCase().trim();
             //String insert = "insert into state (status) values ('" + stateInString + "')";

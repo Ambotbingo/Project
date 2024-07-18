@@ -218,22 +218,6 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
     return OK;
 }
 
-static void read_temp(void)
-{
-    char *buffer = NULL;
-    size_t size = 0;
-
-    /* Open your_file in read-only mode */
-    FILE *fp = fopen(TEMP_FILENAME, "r");
-    fseek(fp, 0, SEEK_END);
-    size = ftell(fp);
-    rewind(fp);
-    buffer = malloc((size + 1) * sizeof(*buffer));
-    fread(buffer, size, 1, fp);
-    buffer[size] = '\0';
-    send_http_request(TEMP_URL, buffer, "POST", true);
-}
-
 static int write_state(char *state)
 {
     FILE *fp = fopen(STATE_FILENAME, "w");
@@ -254,17 +238,20 @@ static void handle_state()
     if (state == ON || state == "ON" || state == 0)
     {
         write_state("ON");
-        send_http_request(STATE_URL, "ON", "POST", true);
+        sleep(SLEEP_DELAY);
+        send_http_request(STATE_URL, "ON", "POST", true);        
     }
     else if (state == OFF || state == "OFF" || state == 1)
     {
         write_state("OFF");
-        send_http_request(STATE_URL, "OFF", "POST", true);
+        sleep(SLEEP_DELAY);
+        send_http_request(STATE_URL, "OFF", "POST", true);        
     }
     else
     {
         write_state("ON");
-        send_http_request(STATE_URL, "ON", "POST", true);
+        sleep(SLEEP_DELAY);
+        send_http_request(STATE_URL, "ON", "POST", true);        
     }
 }
 
@@ -390,7 +377,7 @@ static void _run_simulation(void)
     while (true)
     {
         handle_state();
-        // Read the heater state.
+                // Read the heater state.
         // send_http_request(STATE_URL, &heater_state, "POST", true);
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
         if (err != OK)

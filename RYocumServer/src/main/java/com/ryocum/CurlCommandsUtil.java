@@ -13,7 +13,7 @@ import java.util.Calendar;
 
 import static fi.iki.elonen.NanoHTTPD.MIME_PLAINTEXT;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
-import static com.ryocum.JDBCConnection.addState;
+import static com.ryocum.JDBCConnection.updateState;
 import static com.ryocum.JDBCConnection.updateTemp;
 
 public final class CurlCommandsUtil {
@@ -46,7 +46,7 @@ public final class CurlCommandsUtil {
                     jsonResp = gson.toJson(temps);
                 }
             } else if (route.equals(STATE)) {
-                List<Status> status = JDBCConnection.getStates();
+                String status = JDBCConnection.getState();
                 if (status.isEmpty()) {
                     return failedAttempt("The GET request has no available thermostat status information.\n");                 
                 }
@@ -72,7 +72,7 @@ public final class CurlCommandsUtil {
             }
             else if (route.equals(STATE))
             {
-             result = JDBCConnection.addState(session.getQueryParameterString());
+             result = JDBCConnection.updateState(session.getQueryParameterString());
             }     
             
             return newFixedLengthResponse(result);
