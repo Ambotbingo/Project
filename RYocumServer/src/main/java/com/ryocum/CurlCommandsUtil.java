@@ -46,11 +46,11 @@ public final class CurlCommandsUtil {
                     jsonResp = gson.toJson(temps);
                 }
             } else if (route.equals(STATE)) {
-                String status = JDBCConnection.getState();
+                Status status = JDBCConnection.getState();
                 if (status.isEmpty()) {
                     return failedAttempt("The GET request has no available thermostat status information.\n");                 
                 }
-                //jsonResp = gson.toJson(status);
+                jsonResp = gson.toJson(status.);
             } 
            
 

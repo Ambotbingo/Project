@@ -36,29 +36,24 @@ public final class JDBCConnection {
         return null;
     }
 
-    public static final String getState() {        
-        String select = "select * from state";
-        String state = null;
+    public static final String getState() {  
+
+        String select = "select * from state";        
         try (Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
             Status obj = new Status();
-            while (resultSet.next()) {
-                String currentState = resultSet.getString("STATE");
-                
-                if (currentState != null) {
-                    return currentState; 
-                } else {
-                    obj.setState("OFF");
-                    return state;
-                }               
+            while (resultSet.next()) {               
+                obj.setId(resultSet.getInt("ID"));
+                obj.setState(resultSet.getString("STATUS"));
+                obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));                
             }
-            
+            return obj;
 
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
-        return state;
+        return null;
     }
 
     public static final List<Temperature> getAllTemps() {
