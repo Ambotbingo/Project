@@ -45,6 +45,7 @@ static const char *TEMP_URL = "http://18.217.90.61:8080/temp";
 static char args_doc[] = "--post --url http://localhost:8000 'argument'\n-o -u http://localhost:8000 'argument'";
 static char doc[] = "Always provide a url or valid http for each command";
 
+
 // arguments will be used for storing values from command line
 struct Arguments
 {
@@ -257,7 +258,7 @@ static int write_state(char *state)
         printf("unable to open file for writing\n");
         return ERR_WTF;
     }
-    fputs(state, fp);
+    fputs(state, fp);    
     fclose(fp);
     return OK;
 }
@@ -266,31 +267,37 @@ static int write_state(char *state)
 static void handle_state_get(void)
 {
     // get commands from web server
+   char *state = send_http_request(STATE_URL, NULL, "GET", false);
+   if (strcmp(state, "true") == 0)
+    {
+        write_state("ON");
+   }
+   else if (strcmp(state, "false") == 0)
+   {
+        write_state("OFF");
+   }
+
+ //   chunk.response = NULL;
+  //  chunk.size = NULL;
+}
+
+static void handle_state()
+{
     char *state = send_http_request(STATE_URL, NULL, "GET", false);
-    if (strcmp(state, "true") == 0)
+    
+    if (state == ON || state == "ON")
     {
         write_state("ON");
     }
-    else if (strcmp(state, "false") == 0)
+    else if (state == OFF || state == "OFF")
     {
-        write_state("OFF");
+         write_state("OFF");
     }
-
-    chunk.response = NULL;
-    chunk.size = NULL;
-}
-
-static int handle_work(void)
-{    
-    while (true)
+    else 
     {
-        // read temp and send post to webserver for thermostat
-        read_temp();
-        handle_state_get();
-        sleep(3);
+       write_state("ON");
     }
-
-    return ERR_WTF;
+    
 }
 
 static struct argp argp = {options, parse_opt, args_doc, doc};
@@ -410,15 +417,13 @@ static void _run_simulation(void)
     // It's a bit cold! Note we're using a float in case we want to be
     // more sophisticated with the temperature management in the future.
     // Right now we just use a linear model.    
-
+    tc_heater_state_t heater_state = OFF;  
     syslog(LOG_INFO, "beginning thermocouple simulation");
     while (true)
-    {
-        // Read the heater state.
-        tc_heater_state_t heater_state = ON;
-        char str[] ="ON\n";
-        write_state(str);
-        send_http_request(STATE_URL, "ON", "POST", true);
+    {       
+        handle_state();
+        // Read the heater state.        
+        send_http_request(STATE_URL, &heater_state, "POST", true);
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
         if (err != OK)
             _exit_process(err);
@@ -427,6 +432,8 @@ static void _run_simulation(void)
         // Otherwise, it's getting colder!
         temp = (heater_state == ON) ? temp + 1 : temp - 1;
         char buffer[255];
+
+        //converts float to string and storing it to the variable buffer
         gcvt(temp, 6, buffer);
 
         // Write the temp to the file.
@@ -522,13 +529,6 @@ int main(int argc, char **argv)
 
     // Execute the primary daemon routines.
     _run_simulation();
-
-    //work to talk to server and client
-    err = handle_work();
-    if (err != OK) {
-        return ERR_WTF;
-    }
-
     return ERR_WTF;
 
     // If we get here, something weird has happened.
