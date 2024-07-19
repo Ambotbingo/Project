@@ -2,7 +2,7 @@ package com.ryocum.data;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Calendar;
+
 
 
 public class Settings implements Thermostat {
@@ -10,7 +10,7 @@ public class Settings implements Thermostat {
     // true is on, false is off
     private String Time;
     private String state;
-    private Calendar date;
+    private TimeStamp date;
 
     public Settings() {
     }
