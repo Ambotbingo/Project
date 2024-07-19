@@ -60,7 +60,7 @@ public final class JDBCConnection {
         List<Temperature> temps = new ArrayList<>();
         int rowNum=0;
         rowNum = CountTempRow();
-        if(rowNUm > 20)
+        if(rowNum > 20)
         {
                 DeleteTemp();
         }
@@ -143,7 +143,7 @@ public final class JDBCConnection {
             ResultSet resultSet = statement.executeQuery(select);
             while (resultSet.next()) {
 
-                return resultSet.getInt(1);
+                return resultSet.getInt();
             }
 
         } catch (SQLException ex) {
