@@ -155,7 +155,7 @@ public final class CurlCommandsUtil {
             } else {
                 return null;
             }
-            if (vallues[3] != null) {
+            if (values[3] != null) {
                 values[3] = values[3].toUpperCase();
                 if (values[3] == "MORNING" || values[3] == "AFTERNOON" || values[3] == "MORNING") {
                     timeofday = values[3];
@@ -180,7 +180,7 @@ public final class CurlCommandsUtil {
 
       private static Float tryParseFloat(String text) {
         try {
-          return Parse.parseFloat(text);
+          return Float.parseFloat(text);
         } catch (NumberFormatException e) {
           return null;
         }
