@@ -201,15 +201,17 @@ public final class JDBCConnection {
     String timeofDay = parseTimeOfDay();
     if(timeofDay.equals(MORNING))
     {
-      setting = getSetting(Integer.ToString(1));
+     int one =1;
+      setting = getSetting(Integer.ToString(one));
     }
     else if(timeofDay.equals(AFTERNOON))
     {
-        setting = getSetting(Integer.ToString(2));
+        int two =2;
+        setting = getSetting(Integer.ToString(two));
     }
     else if(timeofDay.equals(EVENING))
-    {
-        setting =getSetting(Integer.ToString(3));
+    { int three = 3;
+        setting =getSetting(Integer.ToString(three));
     }
     if(setting.getTemp1() < currentTemp)
     {
