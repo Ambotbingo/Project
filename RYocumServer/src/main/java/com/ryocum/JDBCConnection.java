@@ -139,7 +139,7 @@ public final class JDBCConnection {
         try (Connection conn = setupConnection()) {
 
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(select);
+            ResultSet resultSet = statement.executeQuery(count);
             while (resultSet.next()) {
 
                 return resultSet.getInt();
@@ -148,7 +148,7 @@ public final class JDBCConnection {
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
-        return temps;
+        return 0;
     }
 
     public static final String updateTemp(Temperature temp) {
