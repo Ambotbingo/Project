@@ -58,7 +58,8 @@ public final class JDBCConnection {
 
     public static final List<Temperature> getAllTemps() {
         List<Temperature> temps = new ArrayList<>();
-        int rowNum = CountTempRow();
+        int rowNum=0;
+        rowNum = CountTempRow();
         if(rowNUm > 20)
         {
                 DeleteTemp();
@@ -121,7 +122,7 @@ public final class JDBCConnection {
     }
 
 
-    private static final int DeleteTemp() {
+    private void DeleteTemp() {
         String del= "DELETE FROM temp";
         try (Connection conn = setupConnection()) {
 
@@ -134,7 +135,7 @@ public final class JDBCConnection {
         return temps;
     }
 
-    private static final int CountTempRow() {
+    private int CountTempRow() {
         String count = "SELECT COUNT(*) FROM temp";
         try (Connection conn = setupConnection()) {
 
