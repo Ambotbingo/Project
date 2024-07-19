@@ -140,17 +140,17 @@ public final class CurlCommandsUtil {
         } else if (route.equals(SETTINGS)) {
 
             String[] values = input.split(",");
-            if (tryParse(values[0] != null)) {
+            if (tryParse(values[0]) != null){
                 id = Integer.parseInt(values[0]);
             } else {
                 return null;
             }
-            if (tryParseFloat(values[1] != null)) {
+            if (tryParseFloat(values[1])!= null) {
                 temp1 = Float.parseFloat(values[1]);
             } else {
                 return null;
             }
-            if (tryParseFloat(values[2] != null)) {
+            if (tryParseFloat(values[2]) != null) {
                 temp2 = Float.parseFloat(values[2]);
             } else {
                 return null;
