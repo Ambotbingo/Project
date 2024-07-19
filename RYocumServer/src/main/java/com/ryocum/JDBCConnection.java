@@ -9,7 +9,7 @@ import java.util.List;
 
 public final class JDBCConnection {
 
-    private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermostat";
+    private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermostat/";
     private static final String ROOT = "root";
     private static final String PASSWORD = "Benjamin12!";
 
@@ -60,7 +60,7 @@ public final class JDBCConnection {
         List<Temperature> temps = new ArrayList<>();
         int rowNum=0;
         rowNum = CountTempRow();
-        if(rowNum > 20)
+        if(rowNum > 50)
         {
                 DeleteTemp();
         }
@@ -150,6 +150,19 @@ public final class JDBCConnection {
         }
         return 0;
     }
+
+    private static SetTimZone() {
+        String timezone = "SET time_zone = '-07:00'";
+        try (Connection conn = setupConnection()) {
+
+            Statement statement = conn.createStatement();
+            statement.execute(timezone);
+            
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }        
+    }
+
 
     public static final String updateTemp(Temperature temp) {
 

@@ -237,18 +237,7 @@ static int write_state(char *state)
 static void handle_state()
 {
     char *state = send_http_request(STATE_URL, NULL, "GET", false); 
-    write_state(state);
-    //if (strcmp(state, "ON") == 0) {
-    //write_state("ON");
-//} else if (strcmp(state, "OFF") == 0) {
-    //write_state("OFF");   
-//}
-//else{
-   // write_state("ON");
-    //send_http_request(STATE_URL, "ON", "POST", true);
-
-//}
-
+    write_state(state);  
     chunk.response = NULL;
     chunk.size = NULL;
 }
