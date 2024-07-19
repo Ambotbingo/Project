@@ -233,9 +233,8 @@ static int write_state(char *state)
 
 static void handle_state()
 {
-    char *state = send_http_request(STATE_URL, NULL, "GET", false);
-
-    if (state == ON || state == "ON" || state == 0)
+    char *state = send_http_request(STATE_URL, NULL, "GET", false);    
+    if (state == ON || strcmp(state, "ON") == 0 || state == 0)
     {
         write_state("ON");
         sleep(SLEEP_DELAY);
