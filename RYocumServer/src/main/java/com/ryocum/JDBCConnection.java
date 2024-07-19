@@ -174,9 +174,17 @@ public final class JDBCConnection {
         return "Post is invalid when malform request is given.\n";
     }
 
-   public static void CheckForSettings(float temp)
+   public static bool CheckForSettingID (int id)
    {
-     
+    List<Settings> allsettings = getAllSettings();
+    for ( Settings setting : allsettings)
+    {
+        if(setting.getId() == id)
+        {
+            return true;
+        }
+    }
+    return false;
    }
 
 
@@ -227,7 +235,7 @@ public final class JDBCConnection {
         return 0;
     }
 
-   
+   //update the settings path
     public static final String updateSetting(Settings setting) {
         String timeOfDay = parseTimeOfDay();
         if(setting != null)
@@ -252,6 +260,36 @@ public final class JDBCConnection {
     }
     return "Please use a valid post format.\n For example: http://18.217.90.61:8080/settings -d <id>,<temp1>,<temp2>,<timeofday>> \n For morning id = 1 : curl -X POST http://18.217.90.61:8080/settings -d 1,70,71,MORNING\n";
     }
+   
+
+    //add settings
+    public static final String addSetting(Settings setting) {
+        String timeOfDay = parseTimeOfDay();
+        if(setting != null)
+    {
+        String update = "update settings set temp1 = " +
+                setting.getTemp1() +
+                ", temp2 = " +
+                setting.getTemp2() +
+                ", id = " +
+                setting.getId() +
+                ", timeOfDay = " +
+                setting.getTimeOfDay();
+
+        try (Connection conn = setupConnection()) {
+            Statement statement = (Statement) conn.createStatement();
+            statement.execute(update);
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+            return "Post temp Failed\n";
+        }
+        return "Post settings Successful\n";
+    }
+    return "Please use a valid post format.\n For example: http://18.217.90.61:8080/settings -d <id>,<temp1>,<temp2>,<timeofday>> \n For morning id = 1 : curl -X POST http://18.217.90.61:8080/settings -d 1,70,71,MORNING\n";
+    }
+
+
+
 
     // delete temp from database
     public static final String deleteTemp(String id) {
