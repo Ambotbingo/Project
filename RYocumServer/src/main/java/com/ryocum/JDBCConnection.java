@@ -236,7 +236,7 @@ public final class JDBCConnection {
                 setting.getTemp2() +
                 " where id = " +
                 setting.getId() +
-                " where timeOfDay = " +
+                " where timeOfday = " +
                 timeOfDay;
 
         try (Connection conn = setupConnection()) {
