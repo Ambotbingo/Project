@@ -112,6 +112,7 @@ public final class CurlCommandsUtil {
                     // {
                     //     result = JDBCConnection.addSetting((Settings) thermostat);
                     // }
+                    result ="going in";
 
                 }
                 else
