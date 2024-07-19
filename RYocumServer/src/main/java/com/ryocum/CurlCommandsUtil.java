@@ -100,7 +100,7 @@ public final class CurlCommandsUtil {
             } else if (route.equals(STATE)) {
                 result = JDBCConnection.updateState(session.getQueryParameterString());
             } else if (route.equals(SETTINGS)) {
-                if (parseSettings(ssession.getQueryParameterString(),
+                if (parseSettings(session.getQueryParameterString(),
                 route) != null) {
                     Settings set = (Settings) thermostat;
                     int id = set.getId();
