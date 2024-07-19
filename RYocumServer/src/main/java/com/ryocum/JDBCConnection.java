@@ -151,7 +151,7 @@ public final class JDBCConnection {
         return 0;
     }
 
-    private static SetTimZone() {
+    private static void SetTimZone() {
         String timezone = "SET time_zone = '-07:00'";
         try (Connection conn = setupConnection()) {
 
