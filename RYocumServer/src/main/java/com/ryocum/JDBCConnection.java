@@ -6,10 +6,12 @@ import com.ryocum.data.Temperature;
 import com.ryocum.data.Settings;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.Date;
 
 public final class JDBCConnection {
 
@@ -21,8 +23,23 @@ public final class JDBCConnection {
     private static String EVENING ="EVENING";
     private static String ON ="ON";
     private static String OFF ="OFF";
+    private static float tempNow;
 
     private JDBCConnection() {
+    }
+
+    // get request based on ID
+    public static final Report getReport() {
+        Report report = new Report();
+        Status st = new Status();
+        Status stat = getState();
+        Calendar time = Calendar.getInstance();
+        DateTime now = DateTime.now( DateTimeZone.UTC );
+        report.setDate(now);
+        report.setState(stat);
+        report.setTemp(tempNow);
+
+        return report;
     }
 
     // get request based on ID
@@ -165,6 +182,7 @@ public final class JDBCConnection {
     public static final String AddTemperature(String tempString) {
         if (tempString != null && tempString != "") {
             float temp = Float.parseFloat(tempString);
+            tempNow = temp;
             CheckForSettingsAndUpdateStuts(temp);
             String insert = "insert into temp (temp) values ('" + temp + "')";
             try (Connection conn = setupConnection()) {

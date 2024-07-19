@@ -2,20 +2,15 @@ package com.ryocum.data;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Date;
 
 
 public class Report implements Thermostat {
 
     private int id;
     private int temp;
-    private Timestamp date;
-
-    public static final Report buildReport(int temp) {
-        Report report = new Report();
-        report.setTemp(temp);
-        report.setDate(Timestamp.from(Instant.now()));
-        return report;
-    }
+    private DateTime date;
+    private String state;
 
     public int getId() {
         return id;
@@ -33,12 +28,21 @@ public class Report implements Thermostat {
         this.temp = temp;
     }
 
-    public Timestamp getDate() {
+    public DateTime getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(DateTime date) {
         this.date = date;
     }
+
+    public float getState() {
+        return state;
+    }
+
+    public void setState(String state){
+        this.state = state;
+    }
+
 
 }

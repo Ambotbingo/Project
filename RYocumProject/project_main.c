@@ -239,15 +239,8 @@ static int write_state(char *state)
 
 static void handle_state()
 {
-    if(chunk.response != NULL )
-    {
     char *state = send_http_request(STATE_URL, NULL, "GET", false); 
     write_state(state); 
-    }   
-    else{
-        write_state("ON");
-    }
-
     chunk.response = NULL;
     chunk.size = NULL;
 }
@@ -374,7 +367,7 @@ static void _run_simulation(void)
     while (true)
     {
         handle_state();
-                // Read the heater state.       
+        // Read the heater state.       
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
         if (err != OK)
             _exit_process(err);

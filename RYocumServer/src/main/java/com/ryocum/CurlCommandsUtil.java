@@ -22,6 +22,7 @@ public final class CurlCommandsUtil {
     private static final String STATE = "status";
     private static final String TEMP = "temp";
     private static final String SETTINGS = "settings";
+    private static final String REPORT = "report";
 
     private CurlCommandsUtil() {
     }
@@ -76,6 +77,16 @@ public final class CurlCommandsUtil {
                     return newFixedLengthResponse(jsonResp);
 
                 }
+            }
+            else if (route.equals(REPORT)) {
+                Report report = new Report();
+                report = JDBCConnection.getReport();
+                if (stat == null) {
+                    return failedAttempt("The GET request has no available thermostat REPORT information.\n");
+                }
+                jsonResp = gson.toJson(stat.getState());
+                String currentStat = stat.getState();
+                return newFixedLengthResponse(currentStat);
             }
             return newFixedLengthResponse("Please provide a correct path.");
         }
@@ -172,6 +183,9 @@ public final class CurlCommandsUtil {
             return STATE;
         }else if (param.contains(SETTINGS)) {
             return SETTINGS;
+        }
+        else if (param.contains(REPORT)) {
+            return REPORT;
         }
         return null;
     }
