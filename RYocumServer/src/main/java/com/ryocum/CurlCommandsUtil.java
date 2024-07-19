@@ -103,7 +103,7 @@ public final class CurlCommandsUtil {
                 Settings setting = parseSettings(session.getQueryParameterString(),
                         route);
                 if (setting != null) {
-                    int id = set.getId();
+                    int id = setting.getId();
                     if (JDBCConnection.CheckForSettingID(id)) {
                         result = JDBCConnection.updateSetting((Settings) thermostat);
                     } else {
@@ -212,7 +212,7 @@ public final class CurlCommandsUtil {
                 timeofday = newValue;
                 
             } else {
-                return "value3problem";
+                return null;
             }
             return new Settings(id, temp1, temp2, timeofday);           
         }
