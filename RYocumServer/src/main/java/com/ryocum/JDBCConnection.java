@@ -16,6 +16,11 @@ public final class JDBCConnection {
     private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermostat";
     private static final String ROOT = "root";
     private static final String PASSWORD = "Benjamin12!";
+    private static String MORNING ="MORNING";
+    private static String AFTERNOON ="AFTERNOON";
+    private static String EVENING ="EVENING";
+    private static String ON ="ON";
+    private static String OFF ="OFF";
 
     private JDBCConnection() {
     }
@@ -160,7 +165,7 @@ public final class JDBCConnection {
     public static final String AddTemperature(String tempString) {
         if (tempString != null && tempString != "") {
             float temp = Float.parseFloat(tempString);
-            //CheckForSettings(temp);
+            CheckForSettingsAndUpdateStuts(temp);
             String insert = "insert into temp (temp) values ('" + temp + "')";
             try (Connection conn = setupConnection()) {
                 Statement statement = (Statement) conn.createStatement();
@@ -187,8 +192,38 @@ public final class JDBCConnection {
     return false;
    }
 
-
-
+//id 1: MORNING
+//id 2:AFTERNOON
+//id 3: EVENING
+ private static CheckForSettingsAndUpdateStuts(Float currentTemp)
+ {
+    Settings setting = new Settings();
+    String timeofDay = parseTimeOfDay();
+    if(timeofDay.equals(MORNING))
+    {
+      setting = getSetting(1);
+    }
+    else if(timeofDay.equals(AFTERNOON))
+    {
+        setting = getSetting(2);
+    }
+    else if(timeofDay.equals(EVENING))
+    {
+        setting =getSetting(3);
+    }
+    if(setting.getTemp1() < currentTemp)
+    {
+        updateState(OFF);
+    }
+    else if(setting.getTemp2 < currentTemp)
+    {
+        updateState(ON);
+    }
+    else
+    {
+        updateState(ON);
+    }
+ }
 
 //    private static int getHours() {
 //        int hour;
@@ -236,8 +271,7 @@ public final class JDBCConnection {
     }
 
    //update the settings path
-    public static final String updateSetting(Settings setting) {
-        String timeOfDay = parseTimeOfDay();
+    public static final String updateSetting(Settings setting) {        
         if(setting != null)
     {
         String update = "update settings set temp1 = " +
@@ -298,11 +332,11 @@ public final class JDBCConnection {
     Calendar time = Calendar.getInstance();
     int hour = time.get(Calendar.HOUR_OF_DAY);
     if (hour >= 18) {
-        return "EVENING";
+        return EVENING;
     } else if (hour >= 12) {
-        return "AFTERNOON";
+        return AFTERNOON;
     } else {
-        return "MORNING";
+        return MORNING;
     }
 }
 
