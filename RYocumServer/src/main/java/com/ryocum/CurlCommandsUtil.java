@@ -139,10 +139,6 @@ public final class CurlCommandsUtil {
 
     // temperature information
     private static Thermostat parseRouteParams(String input, String route) {
-        int id;
-        float temp1;
-        float temp2;
-        String timeofday = null;
         if (route.equals(TEMP)) {
             float temp = Float.parseFloat(input);
             return new Temperature(temp);
@@ -181,12 +177,12 @@ public final class CurlCommandsUtil {
     }
 
 
-    private Settings parseSettings(String input, String route) {
+    private static Settings parseSettings(String input, String route) {
         int id;
         float temp1;
         float temp2;
         String timeofday = null;
-        Settings setting = new Settings();
+        
         if (route.equals(SETTINGS)) {
             String[] values = input.split(",");
             if (tryParse(values[0]) != null){
@@ -211,7 +207,7 @@ public final class CurlCommandsUtil {
                 timeofday = newValue; 
                 setting.setTimeOfDay(timeofday);          
             
-            return setting;          
+            return new Settings(id, temp1, temp2, timeofday);          
         }
         return null;
     }
