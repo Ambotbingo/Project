@@ -41,7 +41,7 @@ public class Settings implements Thermostat {
         this.temp1 = temp1;
     }  
 
-    public float getTimeOfDay() {
+    public String getTimeOfDay() {
         return timeOfDay;
     }
     public void setTimeOfDay(String timeOfDay) {
