@@ -230,6 +230,8 @@ public final class JDBCConnection {
    
     public static final String updateSetting(Settings setting) {
         String timeOfDay = parseTimeOfDay();
+        if(setting != null)
+    {
         String update = "update settings set temp1 = " +
                 setting.getTemp1() +
                 ", temp2 = " +
@@ -247,6 +249,8 @@ public final class JDBCConnection {
             return "Post temp Failed\n";
         }
         return "Post settings Successful\n";
+    }
+    return "Please use a valid post format.\n For example: http://18.217.90.61:8080/settings -d <id>,<temp1>,<temp2>,<timeofday>> \n For morning id = 1 : curl -X POST http://18.217.90.61:8080/settings -d 1,70,71,MORNING\n";
     }
 
     // delete temp from database

@@ -14,10 +14,11 @@ public class Settings implements Thermostat {
     public Settings() {
     }
 
-    public Settings(int id, float temp1, float temp2) {
+    public Settings(int id, float temp1, float temp2, String timeOfDay) {
         this.temp1 = temp1;
         this.temp2 = temp2;
         this.id = id;
+        this.timeOfDay = timeOfDay;
     }
     public int getId() {
         return id;
