@@ -130,24 +130,61 @@ public final class CurlCommandsUtil {
 
     // temperature information
     private static Thermostat parseRouteParams(String input, String route) {
+        int id;
+        float temp1;
+        float temp2;
+        float timeofday = null;
         if (route.equals(TEMP)) {
             float temp = Float.parseFloat(input);
             return new Temperature(temp);
         } else if (route.equals(SETTINGS)) {
+
             String[] values = input.split(",");
-            if(values.count == 4)
-            {
-            int id = Integer.parseInt(values[0]);
-            float temp1 = Float.parseFloat(values[1]);
-            float temp2 = Float.parseFloat(values[2]);
-            String timeofday = values[3];
-            return new Settings(id, temp1, temp2,timeofday);
+            if (tryParse(values[0] != null)) {
+                id = Integer.parseInt(values[0]);
+            } else {
+                return null;
             }
-            return null;
+            if (tryParseFloat(values[1] != null)) {
+                temp1 = Float.parseFloat(values[1]);
+            } else {
+                return null;
+            }
+            if (tryParseFloat(values[2] != null)) {
+                temp2 = Float.parseFloat(values[2]);
+            } else {
+                return null;
+            }
+            if (vallues[3] != null) {
+                values[3] = values[3].toUpperCase();
+                if (values[3] == "MORNING" || values[3] == "AFTERNOON" || values[3] == "MORNING") {
+                    timeofday = values[3];
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+            return new Settings(id, temp1, temp2, timeofday);
         }
         return null;
     }
 
+    private static Integer tryParse(String text) {
+        try {
+          return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+          return null;
+        }
+      }
+
+      private static Float tryParseFloat(String text) {
+        try {
+          return Parse.parseFloat(text);
+        } catch (NumberFormatException e) {
+          return null;
+        }
+      }
     private static String cleanValue(String param) {
         return param.replaceAll("[^0-9]", "");
     }
