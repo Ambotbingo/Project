@@ -4,14 +4,18 @@ import com.ryocum.data.Report;
 import com.ryocum.data.Status;
 import com.ryocum.data.Temperature;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public final class JDBCConnection {
 
     private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermostat";
     private static final String ROOT = "root";
     private static final String PASSWORD = "Benjamin12!";
+    private static float CurrentTemp;
 
     private JDBCConnection() {
     }
@@ -108,6 +112,7 @@ public final class JDBCConnection {
     public static final String AddTemperature(String tempString) {
         if (tempString != null && tempString != "") {
             float temp = Float.parseFloat(tempString);
+            CheckForSettings(temp);
             String insert = "insert into temp (temp) values ('" + temp + "')";
             try (Connection conn = setupConnection()) {
                 Statement statement = (Statement) conn.createStatement();
@@ -121,6 +126,30 @@ public final class JDBCConnection {
         return "Post is invalid when malform request is given.\n";
     }
 
+   public static void CheckForSetting(float temp)
+   {
+     
+   }
+
+
+
+
+   private static int getHours()
+    {
+        int hour;
+        
+        Timestamp stamp = new Timestamp(System.currentTimeMillis());
+        Date newDate = new Date(stamp.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String formattedDate = sdf.format(date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+        cal.setTime(date);
+        hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE); 
+        return hour;  
+    }
 
     private  static void DeleteTemp() {
         String del= "DELETE FROM temp";
@@ -151,31 +180,26 @@ public final class JDBCConnection {
         return 0;
     }
 
-    private static void SetTimZone() {
-        String timezone = "SET time_zone = '-07:00'";
-        try (Connection conn = setupConnection()) {
+   
+    public static final String updateTemp(Settings setting) {
+        String timeOfDay = parseTimeOfDay();
+        String update = "update settings set temp1 = " +
+                settings.getTemp1() +
+                ", temp2 = " +
+                temp.getTemp2() +
+                " where id = " +
+                temp.getId() +
+                " where timeOfDay = " +
+                timeOfDay;
 
-            Statement statement = conn.createStatement();
-            statement.execute(timezone);
-            
-        } catch (SQLException ex) {
-            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
-        }        
-    }
-
-
-    public static final String updateTemp(Temperature temp) {
-
-        String insert = "insert into temp (temp) values ('" + temp + "')";
         try (Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
-            statement.execute(insert);
+            statement.execute(update);
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
-            return "Post Failed\n";
+            return "Post temp Failed\n";
         }
-        return "Post is successfully added to the table.\n";
-
+        return "Post settings Successful\n";
     }
 
     // delete temp from database
@@ -194,5 +218,17 @@ public final class JDBCConnection {
     private static final Connection setupConnection() throws SQLException {
         return DriverManager.getConnection(DB_CONNECTION, ROOT, PASSWORD);
     }
+
+    private static String parseTimeOfDay() {
+    Calendar time = Calendar.getInstance();
+    int hour = time.get(Calendar.HOUR_OF_DAY);
+    if (hour >= 18) {
+        return "EVENING";
+    } else if (hour >= 12) {
+        return "AFTERNOON";
+    } else {
+        return "MORNING";
+    }
+}
 
 }

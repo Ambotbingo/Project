@@ -21,6 +21,7 @@ public final class CurlCommandsUtil {
 
     private static final String STATE = "status";
     private static final String TEMP = "temp";
+    private static final String SETTINGS = "settings";
 
     private CurlCommandsUtil() {
     }
@@ -58,6 +59,23 @@ public final class CurlCommandsUtil {
                 jsonResp = gson.toJson(stat.getState());
                 String currentStat = stat.getState();
                 return newFixedLengthResponse(currentStat);
+            }else if (route.equals(SETTINGS)) {
+                if (param != null && !param.equals("")) {
+                    Settings setting = JDBCConnection.getSetting(param);
+                    if (temp == null) {
+                        return failedAttempt("Settings value was null.\n");
+                    }
+                    jsonResp = gson.toJson(setting);
+                    return newFixedLengthResponse(jsonResp);
+                } else {
+                    List<Settings> settings = JDBCConnection.getAllSettings();
+                    if (temps.isEmpty()) {
+                        return failedAttempt("The GET request for settings has no available information.\n");
+                    }
+                    jsonResp = gson.toJson(settings);
+                    return newFixedLengthResponse(jsonResp);
+
+                }
             }
             return newFixedLengthResponse("Please provide a correct path.");
         }
@@ -78,6 +96,10 @@ public final class CurlCommandsUtil {
             } else if (route.equals(STATE)) {
                 result = JDBCConnection.updateState(session.getQueryParameterString());
             }
+            else if (route.equals(SETTINGS)) {
+                result = JDBCConnection.updateState(session.getQueryParameterString());
+            }
+
 
             return newFixedLengthResponse(result);
         } catch (IOException | NanoHTTPD.ResponseException e) {
@@ -107,6 +129,13 @@ public final class CurlCommandsUtil {
         if (route.equals(TEMP)) {
             float temp = Float.parseFloat(input);
             return new Temperature(temp);
+        }
+        else if (route.equals(SETTINGS)) {
+            String[] values = input.split(DELIM);
+            String id = values[0];
+            float temp = Integer.parseFloat(values[1]);
+            float temp2 = Integer.parseFloat(values[2]);
+            return new Settings(id, temp, temp2);
         }
         return null;
     }

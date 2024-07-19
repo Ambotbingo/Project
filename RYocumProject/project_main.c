@@ -1,4 +1,6 @@
 /**
+ * Ruvylene Yocum
+ * Final Project - ECE 531 IOT
  * The main entry point of the thermocouple simulation program.
  *
  * This program simulates a thermocouple as a deamon process.
@@ -235,31 +237,16 @@ static int write_state(char *state)
     return OK;
 }
 
-//checks if the current temperature if higher or lower than the settings ranges
-//returns the new temp if the current temperature is higher or lower than the settings
-static float handle_temp_settings(float t)
-{
-    char *temperature = send_http_request(SETTINGS_URL, NULL, "GET", false);
-
-    // converts float to string and storing it to the variable buffer
-    float newTemp = strtof(temperature, NULL);
-    chunk.response = NULL;
-    chunk.size = NULL;
-    if(t >  newTemp)
-    {
-    return newTemp; 
-    }
-    else
-    {
-        return t;
-    }
-
-}
-
 static void handle_state()
 {
+    if(chunk.response != NULL )
+    {
     char *state = send_http_request(STATE_URL, NULL, "GET", false); 
-    write_state(state);    
+    write_state(state); 
+    }   
+    else{
+        write_state("ON");
+    }
 
     chunk.response = NULL;
     chunk.size = NULL;
@@ -387,15 +374,13 @@ static void _run_simulation(void)
     while (true)
     {
         handle_state();
-                // Read the heater state.
-        // send_http_request(STATE_URL, &heater_state, "POST", true);
+                // Read the heater state.       
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
         if (err != OK)
             _exit_process(err);
 
         // Is the heater on? then increase the temperature one degree.
         // Otherwise, it's getting colder!
-        temp = handle_temp_settings(temp);
         temp = (heater_state == ON) ? temp + 1 : temp - 1;
         char buffer[255];
 

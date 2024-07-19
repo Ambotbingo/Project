@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Status implements Thermostat {
 
-    // true is on, false is off
+    
     private int id;
     private String state;
     private Timestamp date;

@@ -10,12 +10,14 @@ public class Settings implements Thermostat {
     private int id;
     private float temp1;
     private float temp2;
-    //private Timestamp date;
+    private String timeOfDay;
     public Settings() {
     }
 
-    public Settings(String state) {
-        this.state = state;        
+    public Settings(int id, float temp1, float temp2) {
+        this.temp1 = temp1;
+        this.temp2 = temp2;
+        this.id = id;
     }
     public int getId() {
         return id;
@@ -34,7 +36,15 @@ public class Settings implements Thermostat {
     public float getTemp1() {
         return temp1;
     }
+
     public void setTemp1(float temp1) {
         this.temp1 = temp1;
+    }  
+
+    public float getTimeOfDay() {
+        return timeOfDay;
+    }
+    public void setTimeOfDay(String timeOfDay) {
+        this.timeOfDay = timeOfDay;
     }  
 }
