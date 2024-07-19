@@ -252,6 +252,9 @@ static void handle_state()
         sleep(SLEEP_DELAY);
         send_http_request(STATE_URL, "ON", "POST", true);        
     }
+
+    chunk.response = NULL;
+    chunk.size = NULL;
 }
 
 static struct argp argp = {options, parse_opt, args_doc, doc};
