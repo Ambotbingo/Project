@@ -100,26 +100,20 @@ public final class CurlCommandsUtil {
             } else if (route.equals(STATE)) {
                 result = JDBCConnection.updateState(session.getQueryParameterString());
             } else if (route.equals(SETTINGS)) {
-                if (parseSettings(session.getQueryParameterString(),
-                route) != null) {
-                    // Settings set = (Settings) thermostat;
-                    // int id = set.getId();
-                    // if (JDBCConnection.CheckForSettingID(id))
-                    // {
-                    // result = JDBCConnection.updateSetting((Settings) thermostat);
-                    // }
-                    // else
-                    // {
-                    //     result = JDBCConnection.addSetting((Settings) thermostat);
-                    // }
-                    result =parseSettings(session.getQueryParameterString(),
-                route);
+                Settings setting = parseSettings(session.getQueryParameterString(),
+                        route);
+                if (setting != null) {
+                    int id = set.getId();
+                    if (JDBCConnection.CheckForSettingID(id)) {
+                        result = JDBCConnection.updateSetting((Settings) thermostat);
+                    } else {
+                        result = JDBCConnection.addSetting((Settings) thermostat);
+                    }
+                    result = parseSettings(session.getQueryParameterString(),
+                            route);
 
-                }
-                else
-                {
-                    return newFixedLengthResponse("Setting has some issue."+ parseSettings(session.getQueryParameterString(),
-                    route));
+                } else {
+                    return newFixedLengthResponse("Setting has some issue.");
                 }
             }
 
@@ -155,36 +149,7 @@ public final class CurlCommandsUtil {
         if (route.equals(TEMP)) {
             float temp = Float.parseFloat(input);
             return new Temperature(temp);
-        } else if (route.equals(SETTINGS)) {
-
-            String[] values = input.split(",");
-            if (tryParse(values[0]) != null){
-                id = Integer.parseInt(values[0]);
-            } else {
-                return null;
-            }
-            if (tryParseFloat(values[1])!= null) {
-                temp1 = Float.parseFloat(values[1]);
-            } else {
-                return null;
-            }
-            if (tryParseFloat(values[2]) != null) {
-                temp2 = Float.parseFloat(values[2]);
-            } else {
-                return null;
-            }
-            if (values[3] != null) {
-                values[3] = values[3].toUpperCase();
-                if (values[3] == "MORNING" || values[3] == "AFTERNOON" || values[3] == "MORNING") {
-                    timeofday = values[3];
-                } else {
-                    return null;
-                }
-            } else {
-                return null;
-            }
-            return new Settings(id, temp1, temp2, timeofday);
-        }
+        }         
         return null;
     }
 
@@ -219,7 +184,7 @@ public final class CurlCommandsUtil {
     }
 
 
-    private static String parseSettings(String input, String route) {
+    private static Settings parseSettings(String input, String route) {
         int id;
         float temp1;
         float temp2;
@@ -230,31 +195,27 @@ public final class CurlCommandsUtil {
             if (tryParse(values[0]) != null){
                 id = Integer.parseInt(values[0]);
             } else {
-                return "id";
+                return null;
             }
             if (tryParseFloat(values[1])!= null) {
                 temp1 = Float.parseFloat(values[1]);
             } else {
-                return "temp1";
+                return null;
             }
             if (tryParseFloat(values[2]) != null) {
                 temp2 = Float.parseFloat(values[2]);
             } else {
-                return "temp2";
+                return null;
             }
             if (values[3] != null) {
-                String newV = values[3].trim().toUpperCase();
-                if (newV == "MORNING" || newV == "AFTERNOON" || newV == "EVENING") {
-                    timeofday = values[3];
-                } else {
-                    return values[3];
-                }
+                String newValue = values[3].trim().toUpperCase();
+                timeofday = newValue;
+                
             } else {
                 return "value3problem";
             }
-            //return new Settings(id, temp1, temp2, timeofday);
-            return "settingissue";
+            return new Settings(id, temp1, temp2, timeofday);           
         }
-        return "route is the problime";
+        return null;
     }
 }
