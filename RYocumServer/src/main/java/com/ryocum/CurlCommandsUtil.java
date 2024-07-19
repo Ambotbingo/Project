@@ -133,7 +133,7 @@ public final class CurlCommandsUtil {
         int id;
         float temp1;
         float temp2;
-        float timeofday = null;
+        String timeofday = null;
         if (route.equals(TEMP)) {
             float temp = Float.parseFloat(input);
             return new Temperature(temp);
