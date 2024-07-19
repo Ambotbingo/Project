@@ -102,20 +102,22 @@ public final class CurlCommandsUtil {
             } else if (route.equals(SETTINGS)) {
                 if (parseSettings(session.getQueryParameterString(),
                 route) != null) {
-                    Settings set = (Settings) thermostat;
-                    int id = set.getId();
-                    if (JDBCConnection.CheckForSettingID(id))
-                    {
-                    result = JDBCConnection.updateSetting((Settings) thermostat);
-                    }
-                    else
-                    {
-                        result = JDBCConnection.addSetting((Settings) thermostat);
-                    }
+                    // Settings set = (Settings) thermostat;
+                    // int id = set.getId();
+                    // if (JDBCConnection.CheckForSettingID(id))
+                    // {
+                    // result = JDBCConnection.updateSetting((Settings) thermostat);
+                    // }
+                    // else
+                    // {
+                    //     result = JDBCConnection.addSetting((Settings) thermostat);
+                    // }
+
                 }
                 else
                 {
-                    return newFixedLengthResponse("Setting has some issue.");
+                    return newFixedLengthResponse("Setting has some issue."+ parseSettings(session.getQueryParameterString(),
+                    route));
                 }
             }
 
@@ -215,7 +217,7 @@ public final class CurlCommandsUtil {
     }
 
 
-    private static Settings parseSettings(String input, String route) {
+    private static string parseSettings(String input, String route) {
         int id;
         float temp1;
         float temp2;
@@ -226,29 +228,30 @@ public final class CurlCommandsUtil {
             if (tryParse(values[0]) != null){
                 id = Integer.parseInt(values[0]);
             } else {
-                return null;
+                return "id";
             }
             if (tryParseFloat(values[1])!= null) {
                 temp1 = Float.parseFloat(values[1]);
             } else {
-                return null;
+                return "temp1";
             }
             if (tryParseFloat(values[2]) != null) {
                 temp2 = Float.parseFloat(values[2]);
             } else {
-                return null;
+                return "temp2";
             }
             if (values[3] != null) {
                 values[3] = values[3].toUpperCase();
                 if (values[3] == "MORNING" || values[3] == "AFTERNOON" || values[3] == "MORNING") {
                     timeofday = values[3];
                 } else {
-                    return null;
+                    return "timeofday";
                 }
             } else {
-                return null;
+                return "value3problem";
             }
-            return new Settings(id, temp1, temp2, timeofday);
+            //return new Settings(id, temp1, temp2, timeofday);
+            return "settingissue";
         }
         return null;
     }
