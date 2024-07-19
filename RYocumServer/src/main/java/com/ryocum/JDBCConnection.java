@@ -244,10 +244,10 @@ public final class JDBCConnection {
                 setting.getTemp1() +
                 ", temp2 = " +
                 setting.getTemp2() +
+                ", timeOfDay = " +
+                setting.getTimeOfDay +
                 " where id = " +
-                setting.getId() +
-                " where timeOfDay = " +
-                setting.getTimeOfDay();
+                setting.getId();
 
         try (Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
