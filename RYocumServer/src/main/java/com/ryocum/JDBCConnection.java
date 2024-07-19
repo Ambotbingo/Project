@@ -122,7 +122,7 @@ public final class JDBCConnection {
     }
 
 
-    private void DeleteTemp() {
+    private  static void DeleteTemp() {
         String del= "DELETE FROM temp";
         try (Connection conn = setupConnection()) {
 
@@ -135,7 +135,7 @@ public final class JDBCConnection {
         return temps;
     }
 
-    private int CountTempRow() {
+    private static int CountTempRow() {
         String count = "SELECT COUNT(*) FROM temp";
         try (Connection conn = setupConnection()) {
 
