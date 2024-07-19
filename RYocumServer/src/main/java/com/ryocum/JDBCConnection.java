@@ -127,12 +127,11 @@ public final class JDBCConnection {
         try (Connection conn = setupConnection()) {
 
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(del);
+            statement.execute(del);
             
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
-        }
-        return temps;
+        }        
     }
 
     private static int CountTempRow() {
