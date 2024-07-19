@@ -2,6 +2,7 @@ package com.ryocum;
 
 import com.google.gson.Gson;
 import com.ryocum.data.Report;
+import com.ryocum.data.Settings;
 import com.ryocum.data.Status;
 import com.ryocum.data.Temperature;
 import com.ryocum.data.Thermostat;
@@ -59,7 +60,7 @@ public final class CurlCommandsUtil {
                 jsonResp = gson.toJson(stat.getState());
                 String currentStat = stat.getState();
                 return newFixedLengthResponse(currentStat);
-            }else if (route.equals(SETTINGS)) {
+            } else if (route.equals(SETTINGS)) {
                 if (param != null && !param.equals("")) {
                     Settings setting = JDBCConnection.getSetting(param);
                     if (temp == null) {
@@ -90,16 +91,18 @@ public final class CurlCommandsUtil {
             session.parseBody(new HashMap<>());
             String route = session.getUri().replace("/", "");
             String result = null;
+            Thermostat thermostat = parseRouteParams(
+                    session.getQueryParameterString(),
+                    route);
 
             if (route.equals(TEMP)) {
                 result = JDBCConnection.AddTemperature(session.getQueryParameterString());
             } else if (route.equals(STATE)) {
                 result = JDBCConnection.updateState(session.getQueryParameterString());
+            } else if (route.equals(SETTINGS)) {
+                if (thermostat instanceof Settings) {
+                    result = updateSetting((Settings) thermostat);
             }
-            else if (route.equals(SETTINGS)) {
-                result = JDBCConnection.updateState(session.getQueryParameterString());
-            }
-
 
             return newFixedLengthResponse(result);
         } catch (IOException | NanoHTTPD.ResponseException e) {
@@ -109,8 +112,8 @@ public final class CurlCommandsUtil {
 
     public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {
         String param = cleanValue(session.getUri());
-        String route = session.getUri().replace("/", "");  
-       
+        String route = session.getUri().replace("/", "");
+
         // if (route.equals(TEMP)) {
         String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
         return newFixedLengthResponse(result);
@@ -129,8 +132,7 @@ public final class CurlCommandsUtil {
         if (route.equals(TEMP)) {
             float temp = Float.parseFloat(input);
             return new Temperature(temp);
-        }
-        else if (route.equals(SETTINGS)) {
+        } else if (route.equals(SETTINGS)) {
             String[] values = input.split(DELIM);
             String id = values[0];
             float temp = Integer.parseFloat(values[1]);

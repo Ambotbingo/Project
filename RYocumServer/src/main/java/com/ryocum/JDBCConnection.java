@@ -181,7 +181,7 @@ public final class JDBCConnection {
     }
 
    
-    public static final String updateTemp(Settings setting) {
+    public static final String updateSetting(Settings setting) {
         String timeOfDay = parseTimeOfDay();
         String update = "update settings set temp1 = " +
                 settings.getTemp1() +
