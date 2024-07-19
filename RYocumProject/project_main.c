@@ -56,13 +56,13 @@ struct Arguments
     bool delete;
 };
 
-struct Curlmem
+struct GetString
 {
     char *response;
     size_t size;
 };
 
-struct Curlmem chunk = {0};
+struct GetString chunk = {0};
 
 // argp options required for output to user
 static struct argp_option options[] = {
@@ -73,10 +73,10 @@ static struct argp_option options[] = {
     {"delete", 'd', NO_ARG, NO_ARG, "DELETE HTTP Request, requires a verb"},
     {NO_ARG}};
 
-static size_t call_back(void *data, size_t size, size_t nmemb, void *userp)
+static size_t call_back(void *data, size_t size, size_t nmemb, struct Getstring *s)
 {
     size_t realsize = size * nmemb;
-    struct Curlmem *mem = (struct Curlmem *)userp;
+    struct GetString *mem = (struct GetString *)s;
 
     char *ptr = realloc(mem->response, mem->size + realsize + 1);
     if (ptr == NULL)
@@ -90,6 +90,7 @@ static size_t call_back(void *data, size_t size, size_t nmemb, void *userp)
     mem->response[mem->size] = 0;
 
     return realsize;
+    
 }
 
 static char *send_http_request(char *url, char *message, char *type, bool verb)
@@ -98,7 +99,7 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
     if (curl)
     {
         CURLcode res;
-        FILE *outputFile = fopen("curloutput.txt", "wb");
+        FILE *outputFile = fopen("output.txt", "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, type);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outputFile);
@@ -106,7 +107,7 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
         if (strcmp(type, "GET") == 0)
         {
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, call_back);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &chunk);           
         }
 
         if (verb)
@@ -124,12 +125,14 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
             return REQ_ERR;
         }
 
-        curl_easy_cleanup(curl);
+        curl_easy_cleanup(curl);        
+        fclose(outputFile);
     }
     else
     {
         return NULL;
     }
+    printf(chunk.response);
     return chunk.response;
 }
 
@@ -233,25 +236,18 @@ static int write_state(char *state)
 
 static void handle_state()
 {
-    char *state = send_http_request(STATE_URL, NULL, "GET", false);    
-    if (state == ON || strcmp(state, "ON") == 0 || state == 0)
-    {
-        write_state("ON");
-        sleep(SLEEP_DELAY);
-        send_http_request(STATE_URL, "ON", "POST", true);        
-    }
-    else if (state == OFF || state == "OFF" || state == 1)
-    {
-        write_state("OFF");
-        sleep(SLEEP_DELAY);
-        send_http_request(STATE_URL, "OFF", "POST", true);        
-    }
-    else
-    {
-        write_state("ON");
-        sleep(SLEEP_DELAY);
-        send_http_request(STATE_URL, "ON", "POST", true);        
-    }
+    char *state = send_http_request(STATE_URL, NULL, "GET", false); 
+    write_state(state);
+    //if (strcmp(state, "ON") == 0) {
+    //write_state("ON");
+//} else if (strcmp(state, "OFF") == 0) {
+    //write_state("OFF");   
+//}
+//else{
+   // write_state("ON");
+    //send_http_request(STATE_URL, "ON", "POST", true);
+
+//}
 
     chunk.response = NULL;
     chunk.size = NULL;

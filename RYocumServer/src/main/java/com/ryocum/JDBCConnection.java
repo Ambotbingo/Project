@@ -58,6 +58,11 @@ public final class JDBCConnection {
 
     public static final List<Temperature> getAllTemps() {
         List<Temperature> temps = new ArrayList<>();
+        int rowNum = CountTempRow();
+        if(rowNUm > 20)
+        {
+                DeleteTemp();
+        }
         String select = "select * from temp";
 
         try (Connection conn = setupConnection()) {
@@ -113,6 +118,37 @@ public final class JDBCConnection {
             return "Post is successfully added to the table.\n";
         }
         return "Post is invalid when malform request is given.\n";
+    }
+
+
+    private static final int DeleteTemp() {
+        String del= "DELETE FROM temp";
+        try (Connection conn = setupConnection()) {
+
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(del);
+            
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+        return temps;
+    }
+
+    private static final int CountTempRow() {
+        String count = "SELECT COUNT(*) FROM temp";
+        try (Connection conn = setupConnection()) {
+
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            while (resultSet.next()) {
+
+                return resultSet.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+        return temps;
     }
 
     public static final String updateTemp(Temperature temp) {
