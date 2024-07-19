@@ -175,7 +175,7 @@ public final class JDBCConnection {
         return "Post is invalid when malform request is given.\n";
     }
 
-   public static void CheckForSetting(float temp)
+   public static void CheckForSettings(float temp)
    {
      
    }

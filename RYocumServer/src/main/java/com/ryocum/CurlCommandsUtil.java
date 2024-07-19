@@ -134,8 +134,8 @@ public final class CurlCommandsUtil {
             float temp = Float.parseFloat(input);
             return new Temperature(temp);
         } else if (route.equals(SETTINGS)) {
-            String[] values = input.split(',');
-            String id = values[0];
+            String[] values = input.split(",");
+            int id = Interger.parseInt(values[0]);
             float temp1 = Float.parseFloat(values[1]);
             float temp2 = Float.parseFloat(values[2]);
             return new Settings(id, temp1, temp2);
