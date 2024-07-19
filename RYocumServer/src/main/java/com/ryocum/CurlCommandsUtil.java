@@ -186,31 +186,36 @@ public final class CurlCommandsUtil {
         float temp1;
         float temp2;
         String timeofday = null;
+        Settings setting = new Settings();
         if (route.equals(SETTINGS)) {
 
             String[] values = input.split(",");
             if (tryParse(values[0]) != null){
                 id = Integer.parseInt(values[0]);
+                setting.setId(id);
             } else {
                 return null;
             }
             if (tryParseFloat(values[1])!= null) {
                 temp1 = Float.parseFloat(values[1]);
+                setting.setTemp1(temp1);
             } else {
                 return null;
             }
             if (tryParseFloat(values[2]) != null) {
                 temp2 = Float.parseFloat(values[2]);
+                setting.setTemp2(temp2);
             } else {
                 return null;
             }
-           // if (values[3] != null) {
+           if (values[3] != null) {
                 String newValue = values[3].trim().toUpperCase();
-                timeofday = newValue;                
-            //} else {
-               // return null;
-            //}
-            return new Settings(id, temp1, temp2, timeofday);           
+                timeofday = newValue; 
+                setting.setTimeOfDay(timeofday)     ;          
+            } else {
+               return null;
+            }
+            return setting;          
         }
         return null;
     }
