@@ -12,8 +12,6 @@ public class Temperature implements Thermostat {
     private int id;
     private float temp;
     private Timestamp date;
-    private int hours;
-
     public Temperature() {
     }
 

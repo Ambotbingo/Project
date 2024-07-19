@@ -213,6 +213,8 @@ public final class JDBCConnection {
     { int three = 3;
         setting =getSetting(Integer.toString(three));
     }
+
+    //comparing low and high temperature to the current temperature
     if(setting.getTemp1() < currentTemp && setting.getTemp2() >= currentTemp )
     {
         updateState(ON);
@@ -231,23 +233,6 @@ public final class JDBCConnection {
         updateState(ON);
     }
  }
-
-//    private static int getHours() {
-//        int hour;
-
-//        Timestamp stamp = new Timestamp(System.currentTimeMillis());
-//        Date newDate = new Date(stamp.getTime());
-//        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
-//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-//        String formattedDate = sdf.format(date);
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-//        cal.setTime(date);
-//        hour = cal.get(Calendar.HOUR_OF_DAY);
-//        int minute = cal.get(Calendar.MINUTE);
-//        return hour;
-//    }
-
     private  static void DeleteTemp() {
         String del= "DELETE FROM temp";
         try (Connection conn = setupConnection()) {
