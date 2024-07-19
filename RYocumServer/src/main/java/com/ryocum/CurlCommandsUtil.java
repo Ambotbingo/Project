@@ -181,14 +181,13 @@ public final class CurlCommandsUtil {
     }
 
 
-    private static Settings parseSettings(String input, String route) {
+    private Settings parseSettings(String input, String route) {
         int id;
         float temp1;
         float temp2;
         String timeofday = null;
         Settings setting = new Settings();
         if (route.equals(SETTINGS)) {
-
             String[] values = input.split(",");
             if (tryParse(values[0]) != null){
                 id = Integer.parseInt(values[0]);
