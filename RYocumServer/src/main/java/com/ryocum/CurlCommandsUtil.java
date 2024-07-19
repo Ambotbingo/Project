@@ -207,14 +207,11 @@ public final class CurlCommandsUtil {
                 setting.setTemp2(temp2);
             } else {
                 return null;
-            }
-           if (values[3] != null) {
+            }         
                 String newValue = values[3].trim().toUpperCase();
                 timeofday = newValue; 
-                setting.setTimeOfDay(timeofday)     ;          
-            } else {
-               return null;
-            }
+                setting.setTimeOfDay(timeofday);          
+            
             return setting;          
         }
         return null;
