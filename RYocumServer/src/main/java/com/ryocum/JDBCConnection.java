@@ -142,7 +142,7 @@ public final class JDBCConnection {
             ResultSet resultSet = statement.executeQuery(count);
             while (resultSet.next()) {
 
-                return resultSet.getInt();
+                return resultSet.getInt(1);
             }
 
         } catch (SQLException ex) {
