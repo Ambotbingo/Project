@@ -245,7 +245,7 @@ public final class JDBCConnection {
                 ", temp2 = " +
                 setting.getTemp2() +
                 ", timeOfDay = " +
-                setting.getTimeOfDay +
+                setting.getTimeOfDay() +
                 " where id = " +
                 setting.getId();
 
