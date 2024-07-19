@@ -47,25 +47,4 @@ public class Temperature implements Thermostat {
     public void setDate(Timestamp date) {
         this.date = date;
     }
-
-    //24hrs format
-    public int getHours()
-    {
-        int hour;
-        if(date != null)
-        {
-        Timestamp stamp = date;
-        Date newDate = new Date(stamp.getTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String formattedDate = sdf.format(date);
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        cal.setTime(date);
-        hour = cal.get(Calendar.HOUR_OF_DAY);
-        int minute = cal.get(Calendar.MINUTE); 
-        return hour;   
-        }
-        return 0;        
-    }
 }
