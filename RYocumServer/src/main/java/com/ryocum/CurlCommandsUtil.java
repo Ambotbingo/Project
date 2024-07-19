@@ -108,10 +108,7 @@ public final class CurlCommandsUtil {
                         result = JDBCConnection.updateSetting((Settings) thermostat);
                     } else {
                         result = JDBCConnection.addSetting((Settings) thermostat);
-                    }
-                    result = parseSettings(session.getQueryParameterString(),
-                            route);
-
+                    }  
                 } else {
                     return newFixedLengthResponse("Setting has some issue.");
                 }
