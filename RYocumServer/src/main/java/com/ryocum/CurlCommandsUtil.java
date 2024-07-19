@@ -247,7 +247,7 @@ public final class CurlCommandsUtil {
                 if (newV == "MORNING" || newV == "AFTERNOON" || newV == "EVENING") {
                     timeofday = values[3];
                 } else {
-                    return "timeofday";
+                    return values[3];
                 }
             } else {
                 return "value3problem";
