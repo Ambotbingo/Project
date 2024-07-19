@@ -100,7 +100,8 @@ public final class CurlCommandsUtil {
             } else if (route.equals(STATE)) {
                 result = JDBCConnection.updateState(session.getQueryParameterString());
             } else if (route.equals(SETTINGS)) {
-                if (thermostat instanceof Settings) {
+                if (parseSettings(ssession.getQueryParameterString(),
+                route) != null) {
                     Settings set = (Settings) thermostat;
                     int id = set.getId();
                     if (JDBCConnection.CheckForSettingID(id))
@@ -209,6 +210,45 @@ public final class CurlCommandsUtil {
             return STATE;
         }else if (param.contains(SETTINGS)) {
             return SETTINGS;
+        }
+        return null;
+    }
+
+
+    private static Settings parseSettings(String input, String route) {
+        int id;
+        float temp1;
+        float temp2;
+        String timeofday = null;
+        if (route.equals(SETTINGS)) {
+
+            String[] values = input.split(",");
+            if (tryParse(values[0]) != null){
+                id = Integer.parseInt(values[0]);
+            } else {
+                return null;
+            }
+            if (tryParseFloat(values[1])!= null) {
+                temp1 = Float.parseFloat(values[1]);
+            } else {
+                return null;
+            }
+            if (tryParseFloat(values[2]) != null) {
+                temp2 = Float.parseFloat(values[2]);
+            } else {
+                return null;
+            }
+            if (values[3] != null) {
+                values[3] = values[3].toUpperCase();
+                if (values[3] == "MORNING" || values[3] == "AFTERNOON" || values[3] == "MORNING") {
+                    timeofday = values[3];
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+            return new Settings(id, temp1, temp2, timeofday);
         }
         return null;
     }
