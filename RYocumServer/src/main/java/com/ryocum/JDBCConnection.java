@@ -9,7 +9,7 @@ import java.util.List;
 
 public final class JDBCConnection {
 
-    private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermostat/";
+    private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:3306/thermostat";
     private static final String ROOT = "root";
     private static final String PASSWORD = "Benjamin12!";
 
