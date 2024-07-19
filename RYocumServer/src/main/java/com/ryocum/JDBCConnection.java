@@ -3,6 +3,7 @@ package com.ryocum;
 import com.ryocum.data.Report;
 import com.ryocum.data.Status;
 import com.ryocum.data.Temperature;
+import com.ryocum.data.Settings;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
