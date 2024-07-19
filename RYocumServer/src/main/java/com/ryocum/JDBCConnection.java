@@ -239,7 +239,7 @@ public final class JDBCConnection {
                 " where id = " +
                 setting.getId() +
                 " where timeOfday = " +
-                timeOfDay;
+                setting.getTimeOfDay();
 
         try (Connection conn = setupConnection()) {
             Statement statement = (Statement) conn.createStatement();
