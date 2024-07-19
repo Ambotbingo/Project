@@ -105,9 +105,9 @@ public final class CurlCommandsUtil {
                 if (setting != null) {
                     int id = setting.getId();
                     if (JDBCConnection.CheckForSettingID(id)) {
-                        result = JDBCConnection.updateSetting((Settings) thermostat);
+                        result = JDBCConnection.updateSetting(setting);
                     } else {
-                        result = JDBCConnection.addSetting((Settings) thermostat);
+                        result = JDBCConnection.addSetting(setting);
                     }  
                 } else {
                     return newFixedLengthResponse("Setting has some issue.");
