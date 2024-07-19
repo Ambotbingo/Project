@@ -86,6 +86,7 @@ public final class CurlCommandsUtil {
                         "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temp\n");
     }
 
+    //Performing the POST request
     public static NanoHTTPD.Response performPost(NanoHTTPD.IHTTPSession session) {
         try {
             session.parseBody(new HashMap<>());
@@ -102,6 +103,7 @@ public final class CurlCommandsUtil {
             } else if (route.equals(SETTINGS)) {
                 if (thermostat instanceof Settings) {
                     result = updateSetting((Settings) thermostat);
+                }
             }
 
             return newFixedLengthResponse(result);
