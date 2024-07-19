@@ -213,13 +213,13 @@ public final class JDBCConnection {
     { int three = 3;
         setting =getSetting(Integer.toString(three));
     }
-    if(setting.getTemp1() < currentTemp)
-    {
-        updateState(OFF);
-    }
-    else if(setting.getTemp2 < currentTemp)
+    if(setting.getTemp1() < currentTemp && setting.getTemp2() > currentTemp )
     {
         updateState(ON);
+    }
+    else if(setting.getTemp2() < currentTemp)
+    {
+        updateState(OFF);
     }
     else
     {
