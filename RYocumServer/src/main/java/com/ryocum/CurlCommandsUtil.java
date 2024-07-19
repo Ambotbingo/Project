@@ -69,7 +69,7 @@ public final class CurlCommandsUtil {
                     return newFixedLengthResponse(jsonResp);
                 } else {
                     List<Settings> settings = JDBCConnection.getAllSettings();
-                    if (temps.isEmpty()) {
+                    if (settings.isEmpty()) {
                         return failedAttempt("The GET request for settings has no available information.\n");
                     }
                     jsonResp = gson.toJson(settings);
@@ -134,11 +134,11 @@ public final class CurlCommandsUtil {
             float temp = Float.parseFloat(input);
             return new Temperature(temp);
         } else if (route.equals(SETTINGS)) {
-            String[] values = input.split(DELIM);
+            String[] values = input.split(',');
             String id = values[0];
-            float temp = Integer.parseFloat(values[1]);
-            float temp2 = Integer.parseFloat(values[2]);
-            return new Settings(id, temp, temp2);
+            float temp1 = Float.parseFloat(values[1]);
+            float temp2 = Float.parseFloat(values[2]);
+            return new Settings(id, temp1, temp2);
         }
         return null;
     }

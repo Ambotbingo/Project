@@ -41,6 +41,29 @@ public final class JDBCConnection {
         return null;
     }
 
+    //get settings based on ID     
+    public static final Settings getSetting(String id) {
+
+        String select = "select * from settings where id = " + id;
+        try (Connection conn = setupConnection()) {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            Settings temp = new Settings();
+            while (resultSet.next()) {
+                temp.setId(resultSet.getInt("ID"));
+                temp.setTemp1(resultSet.getFloat("TEMP1"));
+                temp.setTemp2(resultSet.getFloat("TEMP2"));
+                temp.setTimeOfDay(resultSet.getString("TIMEOFDAY"));
+                //temp.setDate(resultSet.getTimestamp("TIMDEDATEINFO"));
+            }
+            return temp;
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+        return null;
+    }
+
+
     public static final Status getState() {  
 
         String select = "select * from state";        
@@ -81,6 +104,31 @@ public final class JDBCConnection {
                 obj.setId(resultSet.getInt("ID"));
                 obj.setTemp(resultSet.getFloat("TEMP"));
                 obj.setDate(resultSet.getTimestamp("TIMEDATEINFO"));
+                temps.add(obj);
+            }
+
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+        return temps;
+    }   
+    
+    //get all settings in the table
+    public static final List<Settings> getAllSettings() {
+        List<Settings> temps = new ArrayList<>();        
+        String select = "select * from settings";
+
+        try (Connection conn = setupConnection()) {
+
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            while (resultSet.next()) {
+
+                Settings obj = new Settings();
+                obj.setId(resultSet.getInt("ID"));
+                obj.setTemp1(resultSet.getFloat("TEMP1"));
+                obj.setTemp2(resultSet.getFloat("TEMP2"));
+                obj.setTimeOfDay(resultSet.getString("TIMEOFDAY"));
                 temps.add(obj);
             }
 
@@ -135,22 +183,21 @@ public final class JDBCConnection {
 
 
 
-   private static int getHours()
-    {
-        int hour;
-        
-        Timestamp stamp = new Timestamp(System.currentTimeMillis());
-        Date newDate = new Date(stamp.getTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String formattedDate = sdf.format(date);
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-        cal.setTime(date);
-        hour = cal.get(Calendar.HOUR_OF_DAY);
-        int minute = cal.get(Calendar.MINUTE); 
-        return hour;  
-    }
+//    private static int getHours() {
+//        int hour;
+
+//        Timestamp stamp = new Timestamp(System.currentTimeMillis());
+//        Date newDate = new Date(stamp.getTime());
+//        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
+//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        String formattedDate = sdf.format(date);
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        cal.setTime(date);
+//        hour = cal.get(Calendar.HOUR_OF_DAY);
+//        int minute = cal.get(Calendar.MINUTE);
+//        return hour;
+//    }
 
     private  static void DeleteTemp() {
         String del= "DELETE FROM temp";
