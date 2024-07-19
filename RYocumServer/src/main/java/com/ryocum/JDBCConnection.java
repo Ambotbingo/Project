@@ -160,7 +160,7 @@ public final class JDBCConnection {
     public static final String AddTemperature(String tempString) {
         if (tempString != null && tempString != "") {
             float temp = Float.parseFloat(tempString);
-            CheckForSettings(temp);
+            //CheckForSettings(temp);
             String insert = "insert into temp (temp) values ('" + temp + "')";
             try (Connection conn = setupConnection()) {
                 Statement statement = (Statement) conn.createStatement();
@@ -174,7 +174,7 @@ public final class JDBCConnection {
         return "Post is invalid when malform request is given.\n";
     }
 
-   public static bool CheckForSettingID (int id)
+   public static Boolean CheckForSettingID (int id)
    {
     List<Settings> allsettings = getAllSettings();
     for ( Settings setting : allsettings)
