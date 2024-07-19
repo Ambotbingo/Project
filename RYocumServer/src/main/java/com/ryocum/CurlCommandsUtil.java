@@ -112,6 +112,10 @@ public final class CurlCommandsUtil {
                         result = JDBCConnection.addSetting((Settings) thermostat);
                     }
                 }
+                else
+                {
+                    return newFixedLengthResponse("Setting has some issue.");
+                }
             }
 
             return newFixedLengthResponse(result);
