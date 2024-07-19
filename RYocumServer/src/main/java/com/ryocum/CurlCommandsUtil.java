@@ -217,7 +217,7 @@ public final class CurlCommandsUtil {
     }
 
 
-    private static string parseSettings(String input, String route) {
+    private static String parseSettings(String input, String route) {
         int id;
         float temp1;
         float temp2;
