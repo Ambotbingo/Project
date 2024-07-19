@@ -102,7 +102,7 @@ public final class CurlCommandsUtil {
                 result = JDBCConnection.updateState(session.getQueryParameterString());
             } else if (route.equals(SETTINGS)) {
                 if (thermostat instanceof Settings) {
-                    result = updateSetting((Settings) thermostat);
+                    result = JDBCConnection.updateSetting((Settings) thermostat);
                 }
             }
 
