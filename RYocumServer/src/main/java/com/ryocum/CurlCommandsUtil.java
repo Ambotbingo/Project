@@ -62,7 +62,7 @@ public final class CurlCommandsUtil {
             } else if (route.equals(SETTINGS)) {
                 if (param != null && !param.equals("")) {
                     Settings setting = JDBCConnection.getSetting(param);
-                    if (temp == null) {
+                    if (setting== null) {
                         return failedAttempt("Settings value was null.\n");
                     }
                     jsonResp = gson.toJson(setting);
