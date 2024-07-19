@@ -5,17 +5,17 @@ import java.util.Date;
 import java.util.Calendar;
 
 
-public class Status implements Thermostat {
+public class Settings implements Thermostat {
 
     // true is on, false is off
     private String Time;
     private String state;
     private Calendar date;
 
-    public Status() {
+    public Settings() {
     }
 
-    public Status(String state) {
+    public Settings(String state) {
         this.state = state;        
     }
 
