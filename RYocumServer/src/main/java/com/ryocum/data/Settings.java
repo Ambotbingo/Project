@@ -10,7 +10,7 @@ public class Settings implements Thermostat {
     // true is on, false is off
     private String Time;
     private String state;
-    private TimeStamp date;
+    private Timestamp date;
 
     public Settings() {
     }
