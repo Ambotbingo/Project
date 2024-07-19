@@ -243,8 +243,8 @@ public final class CurlCommandsUtil {
                 return "temp2";
             }
             if (values[3] != null) {
-                values[3] = values[3].toUpperCase();
-                if (values[3] == "MORNING" || values[3] == "AFTERNOON" || values[3] == "MORNING") {
+                String newV = values[3].trim().toUpperCase();
+                if (newV == "MORNING" || newV == "AFTERNOON" || newV == "EVENING") {
                     timeofday = values[3];
                 } else {
                     return "timeofday";
