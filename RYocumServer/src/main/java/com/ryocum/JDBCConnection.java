@@ -195,7 +195,7 @@ public final class JDBCConnection {
 //id 1: MORNING
 //id 2:AFTERNOON
 //id 3: EVENING
- private static CheckForSettingsAndUpdateStuts(Float currentTemp)
+ private static void CheckForSettingsAndUpdateStuts(Float currentTemp)
  {
     Settings setting = new Settings();
     String timeofDay = parseTimeOfDay();
