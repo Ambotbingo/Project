@@ -15,8 +15,7 @@ import java.util.Date;
 
 import static fi.iki.elonen.NanoHTTPD.MIME_PLAINTEXT;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
-import static com.ryocum.JDBCConnection.updateState;
-import static com.ryocum.JDBCConnection.updateTemp;
+
 
 public final class CurlCommandsUtil {
 
