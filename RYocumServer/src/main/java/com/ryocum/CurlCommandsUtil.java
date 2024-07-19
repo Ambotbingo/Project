@@ -204,13 +204,12 @@ public final class CurlCommandsUtil {
             } else {
                 return null;
             }
-            if (values[3] != null) {
+           // if (values[3] != null) {
                 String newValue = values[3].trim().toUpperCase();
-                timeofday = newValue;
-                
-            } else {
-                return null;
-            }
+                timeofday = newValue;                
+            //} else {
+               // return null;
+            //}
             return new Settings(id, temp1, temp2, timeofday);           
         }
         return null;
