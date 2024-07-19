@@ -48,15 +48,15 @@ public final class JDBCConnection {
         try (Connection conn = setupConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(select);
-            Settings temp = new Settings();
+            Settings setting = new Settings();
             while (resultSet.next()) {
-                temp.setId(resultSet.getInt("ID"));
-                temp.setTemp1(resultSet.getFloat("TEMP1"));
-                temp.setTemp2(resultSet.getFloat("TEMP2"));
-                temp.setTimeOfDay(resultSet.getString("TIMEOFDAY"));
+                setting.setId(resultSet.getInt("ID"));
+                setting.setTemp1(resultSet.getFloat("TEMP1"));
+                setting.setTemp2(resultSet.getFloat("TEMP2"));
+                setting.setTimeOfDay(resultSet.getString("TIMEOFDAY"));
                 //temp.setDate(resultSet.getTimestamp("TIMDEDATEINFO"));
             }
-            return temp;
+            return setting;
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
@@ -115,7 +115,7 @@ public final class JDBCConnection {
     
     //get all settings in the table
     public static final List<Settings> getAllSettings() {
-        List<Settings> temps = new ArrayList<>();        
+        List<Settings> settings = new ArrayList<>();        
         String select = "select * from settings";
 
         try (Connection conn = setupConnection()) {
@@ -129,13 +129,13 @@ public final class JDBCConnection {
                 obj.setTemp1(resultSet.getFloat("TEMP1"));
                 obj.setTemp2(resultSet.getFloat("TEMP2"));
                 obj.setTimeOfDay(resultSet.getString("TIMEOFDAY"));
-                temps.add(obj);
+                settings.add(obj);
             }
 
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
-        return temps;
+        return settings;
     }    
 
     //updating the state table
@@ -232,11 +232,11 @@ public final class JDBCConnection {
     public static final String updateSetting(Settings setting) {
         String timeOfDay = parseTimeOfDay();
         String update = "update settings set temp1 = " +
-                settings.getTemp1() +
+                setting.getTemp1() +
                 ", temp2 = " +
-                temp.getTemp2() +
+                setting.getTemp2() +
                 " where id = " +
-                temp.getId() +
+                setting.getId() +
                 " where timeOfDay = " +
                 timeOfDay;
 
