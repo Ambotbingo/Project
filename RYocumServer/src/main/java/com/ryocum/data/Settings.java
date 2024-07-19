@@ -11,6 +11,7 @@ public class Settings implements Thermostat {
     private String Time;
     private String state;
     private Timestamp date;
+    private int id;
 
     public Settings() {
     }
