@@ -7,41 +7,34 @@ import java.util.Date;
 
 public class Settings implements Thermostat {
 
-    // true is on, false is off
-    private String Time;
-    private String state;
-    private Timestamp date;
     private int id;
-
+    private float temp1;
+    private float temp2;
+    //private Timestamp date;
     public Settings() {
     }
 
     public Settings(String state) {
         this.state = state;        
     }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getState() {
-        return state;
-    }
-   
-    public Timestamp getDate() {
-        return date;
-    }
-
-    public void setDate(Timestamp date) {
-        this.date = date;
-    }
-
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
+   
+    public float getTemp2() {
+        return temp2;
+    }
 
+    public void setTemp2(float temp2) {
+        this.temp2 = temp2;
+    }  
+    public float getTemp1() {
+        return temp1;
+    }
+    public void setTemp1(float temp1) {
+        this.temp1 = temp1;
+    }  
 }

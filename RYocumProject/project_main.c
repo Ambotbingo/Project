@@ -40,6 +40,7 @@ static float temp = 64;
 // params, move to config file
 static const char *STATE_URL = "http://18.217.90.61:8080/status";
 static const char *TEMP_URL = "http://18.217.90.61:8080/temp";
+static const char *SETTINGS_URL = "http://18.217.90.61:8080/settings";
 
 // set params for argp
 static char args_doc[] = "--post --url http://localhost:8000 'argument'\n-o -u http://localhost:8000 'argument'";
@@ -73,10 +74,10 @@ static struct argp_option options[] = {
     {"delete", 'd', NO_ARG, NO_ARG, "DELETE HTTP Request, requires a verb"},
     {NO_ARG}};
 
-static size_t call_back(void *data, size_t size, size_t nmemb, struct Getstring *s)
+static size_t call_back(void *data, size_t size, size_t nmemb, void *userp)
 {
     size_t realsize = size * nmemb;
-    struct GetString *mem = (struct GetString *)s;
+    struct GetString *mem = (struct GetString *)userp;
 
     char *ptr = realloc(mem->response, mem->size + realsize + 1);
     if (ptr == NULL)
@@ -90,7 +91,6 @@ static size_t call_back(void *data, size_t size, size_t nmemb, struct Getstring 
     mem->response[mem->size] = 0;
 
     return realsize;
-    
 }
 
 static char *send_http_request(char *url, char *message, char *type, bool verb)
@@ -99,7 +99,7 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
     if (curl)
     {
         CURLcode res;
-        FILE *outputFile = fopen("output.txt", "wb");
+        FILE *outputFile = fopen("curloutput.txt", "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, type);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outputFile);
@@ -107,12 +107,12 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
         if (strcmp(type, "GET") == 0)
         {
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, call_back);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &chunk);           
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);           
         }
 
         if (verb)
         {
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, message);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, message);                  
         }
         else
         {
@@ -141,6 +141,7 @@ int handle_requirement_error(char *message, struct argp_state *state)
     argp_usage(state);
     return REQ_ERR;
 }
+
 
 // parse command line options IF not run as a daemon instance
 static error_t parse_opt(int key, char *arg, struct argp_state *state)
@@ -234,10 +235,32 @@ static int write_state(char *state)
     return OK;
 }
 
+//checks if the current temperature if higher or lower than the settings ranges
+//returns the new temp if the current temperature is higher or lower than the settings
+static float handle_temp_settings(float t)
+{
+    char *temperature = send_http_request(SETTINGS_URL, NULL, "GET", false);
+
+    // converts float to string and storing it to the variable buffer
+    float newTemp = strtof(temperature, NULL);
+    chunk.response = NULL;
+    chunk.size = NULL;
+    if(t >  newTemp)
+    {
+    return newTemp; 
+    }
+    else
+    {
+        return t;
+    }
+
+}
+
 static void handle_state()
 {
     char *state = send_http_request(STATE_URL, NULL, "GET", false); 
-    write_state(state);  
+    write_state(state);    
+
     chunk.response = NULL;
     chunk.size = NULL;
 }
@@ -372,6 +395,7 @@ static void _run_simulation(void)
 
         // Is the heater on? then increase the temperature one degree.
         // Otherwise, it's getting colder!
+        temp = handle_temp_settings(temp);
         temp = (heater_state == ON) ? temp + 1 : temp - 1;
         char buffer[255];
 
