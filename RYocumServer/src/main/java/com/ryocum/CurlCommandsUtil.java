@@ -81,12 +81,12 @@ public final class CurlCommandsUtil {
             else if (route.equals(REPORT)) {
                 Report report = new Report();
                 report = JDBCConnection.getReport();
-                if (stat == null) {
+                if (report== null) {
                     return failedAttempt("The GET request has no available thermostat REPORT information.\n");
                 }
-                jsonResp = gson.toJson(stat.getState());
-                String currentStat = stat.getState();
-                return newFixedLengthResponse(currentStat);
+                jsonResp = gson.toJson(report);
+               
+                return newFixedLengthResponse(jsonResp + "update");
             }
             return newFixedLengthResponse("Please provide a correct path.");
         }
