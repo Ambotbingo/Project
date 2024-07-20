@@ -31,12 +31,9 @@ public final class JDBCConnection {
     // get request based on ID
     public static final Report getReport() {
         Report report = new Report();
-        Status st = new Status();       
-        String state = st.getState();
+        Status st = new Status();  
         Calendar time = Calendar.getInstance();
-        Instant now = Instant.now();
-        report.setDate(st.setDate());
-        report.setState(st.setState());
+        Instant now = Instant.now();        
         report.setTemp(tempNow);
 
         return report;

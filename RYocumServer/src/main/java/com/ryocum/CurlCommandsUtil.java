@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Calendar;
 import java.util.Date;
+import java.time.Instant;
 
 import static fi.iki.elonen.NanoHTTPD.MIME_PLAINTEXT;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
@@ -33,6 +34,7 @@ public final class CurlCommandsUtil {
         String param = cleanValue(session.getUri());
         Gson gson = new Gson();
         Status stat = new Status();
+        String cStat;
 
         if (route != null) {
             if (route.equals(TEMP)) {
@@ -54,6 +56,7 @@ public final class CurlCommandsUtil {
                 }
             } else if (route.equals(STATE)) {
                 stat = JDBCConnection.getState();
+                cStat =stat;
                 if (stat == null) {
                     return failedAttempt("The GET request has no available thermostat status information.\n");
                 }
@@ -75,18 +78,19 @@ public final class CurlCommandsUtil {
                     }
                     jsonResp = gson.toJson(settings);
                     return newFixedLengthResponse(jsonResp);
-
                 }
             }
             else if (route.equals(REPORT)) {
                 Report report = new Report();
                 report = JDBCConnection.getReport();
+                report.setState(cStat);                
+                Instant now = Instant.now();
                 if (report== null) {
                     return failedAttempt("The GET request has no available thermostat REPORT information.\n");
                 }
                 jsonResp = gson.toJson(report);
                
-                return newFixedLengthResponse(jsonResp + "update");
+                return newFixedLengthResponse(jsonResp + "updated: "+ now);
             }
             return newFixedLengthResponse("Please provide a correct path.");
         }
