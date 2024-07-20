@@ -29,11 +29,11 @@ public class Report implements Thermostat {
         this.temp = temp;
     }
 
-    public DateTime getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public Timestamp setDate(Timestamp date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
