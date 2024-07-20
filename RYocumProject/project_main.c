@@ -43,6 +43,7 @@ static float temp = 64;
 static const char *STATE_URL = "http://18.217.90.61:8080/status";
 static const char *TEMP_URL = "http://18.217.90.61:8080/temp";
 static const char *SETTINGS_URL = "http://18.217.90.61:8080/settings";
+static int count = 0;
 
 // set params for argp
 static char args_doc[] = "--post --url http://localhost:8000 'argument'\n-o -u http://localhost:8000 'argument'";
@@ -105,7 +106,7 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, type);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outputFile);
-
+        
         if (strcmp(type, "GET") == 0)
         {
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, call_back);
@@ -126,6 +127,11 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
         {
             return REQ_ERR;
         }
+        if (res == CURLE_OK)
+        {
+            count = 1 ;
+        }
+
 
         curl_easy_cleanup(curl);        
         fclose(outputFile);
@@ -239,10 +245,27 @@ static int write_state(char *state)
 
 static void handle_state()
 {    
+   
     char *state = send_http_request(STATE_URL, NULL, "GET", false); 
-    write_state(state); 
+    syslog(LOG_INFO,  "%s", chunk.response);
+    if (chunk.response != NULL)
+    {
+    if(strstr,chunk.response,"OFF")
+    {
+        write_state("OFF");
+    }
+    else{
+        write_state("ON");
+    }
+    //write_state(state); 
+    
+    }
+    else
+    {
+     write_state("ON");
+    }
     chunk.response = NULL;
-    chunk.size = NULL;
+    chunk.size = NULL;  
 }
 
 static struct argp argp = {options, parse_opt, args_doc, doc};
@@ -366,7 +389,8 @@ static void _run_simulation(void)
     syslog(LOG_INFO, "beginning thermocouple simulation");
     while (true)
     {
-        tc_heater_state_t heater_state = OFF;
+        //tc_heater_state_t heater_state = OFF;        
+        handle_state();  
         // Read the heater state.       
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
         if (err != OK)
@@ -382,11 +406,10 @@ static void _run_simulation(void)
 
         // Write the temp to the file.
         err = tc_write_temperature(TEMP_FILENAME, temp);
-        send_http_request(TEMP_URL, buffer, "POST", true);
-        handle_state();
+        send_http_request(TEMP_URL, buffer, "POST", true);    
+          
         if (err != OK)
             _exit_process(err);
-
         // Take a bit of a nap.
         sleep(SLEEP_DELAY);
     }
