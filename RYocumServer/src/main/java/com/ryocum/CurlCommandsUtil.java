@@ -61,8 +61,7 @@ public final class CurlCommandsUtil {
                     return failedAttempt("The GET request has no available thermostat status information.\n");
                 }
                 jsonResp = gson.toJson(stat.getState());
-                String currentStat = stat.getState();
-                cStat = currentStat;
+                String currentStat = stat.getState();                
                 return newFixedLengthResponse(currentStat);
                 //Display settings
             } else if (route.equals(SETTINGS)) {
