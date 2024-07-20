@@ -366,8 +366,8 @@ static void _run_simulation(void)
     syslog(LOG_INFO, "beginning thermocouple simulation");
     while (true)
     {
-        handle_state();
-                // Read the heater state.       
+        tc_heater_state_t heater_state = OFF;
+        // Read the heater state.       
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
         if (err != OK)
             _exit_process(err);
@@ -383,6 +383,7 @@ static void _run_simulation(void)
         // Write the temp to the file.
         err = tc_write_temperature(TEMP_FILENAME, temp);
         send_http_request(TEMP_URL, buffer, "POST", true);
+        handle_state();
         if (err != OK)
             _exit_process(err);
 
