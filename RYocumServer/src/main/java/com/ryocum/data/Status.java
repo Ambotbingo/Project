@@ -1,6 +1,6 @@
 package com.ryocum.data;
 
-import java.time.Instant;
+import java.sql.Timestamp;
 import java.util.Date;
 
 
@@ -9,7 +9,7 @@ public class Status implements Thermostat {
     
     private int id;
     private String state;
-    private time date;
+    private Timestamp date;
 
     public Status() {
     }
@@ -26,11 +26,11 @@ public class Status implements Thermostat {
         return state;
     }
    
-    public time getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(time date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

@@ -8,8 +8,8 @@ import java.util.Date;
 public class Report implements Thermostat {
 
     private int id;
-    private float temp;
-    private Timestamp date;
+    private int temp;
+    private TimeStamp date;
     private String state;
 
     public int getId() {
@@ -24,7 +24,7 @@ public class Report implements Thermostat {
         return temp;
     }
 
-    public void setTemp(ffloat temp) {
+    public void setTemp(int temp) {
         this.temp = temp;
     }
 
