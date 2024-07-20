@@ -55,8 +55,7 @@ public final class CurlCommandsUtil {
 
                 }
             } else if (route.equals(STATE)) {
-                stat = JDBCConnection.getState();
-                cStat =stat;
+                stat = JDBCConnection.getState();                
                 if (stat == null) {
                     return failedAttempt("The GET request has no available thermostat status information.\n");
                 }
