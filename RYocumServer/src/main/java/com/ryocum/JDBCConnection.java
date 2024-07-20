@@ -109,7 +109,7 @@ public final class JDBCConnection {
         rowNum = CountTempRow();
         if(rowNum > 50)
         {
-                DeleteTemp();
+                //DeleteTemp();
         }
         String select = "select * from temp";
 
