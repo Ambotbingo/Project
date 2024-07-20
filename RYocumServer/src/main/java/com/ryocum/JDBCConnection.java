@@ -32,11 +32,11 @@ public final class JDBCConnection {
     public static final Report getReport() {
         Report report = new Report();
         Status st = new Status();
-        Status stat = getState();
+        String state = st.getState();
         Calendar time = Calendar.getInstance();
-        DateTime now = DateTime.now( DateTimeZone.UTC );
+        Instant now = Instant.now();
         report.setDate(now);
-        report.setState(stat);
+        report.setState(state);
         report.setTemp(tempNow);
 
         return report;

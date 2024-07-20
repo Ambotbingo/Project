@@ -9,7 +9,7 @@ public class Report implements Thermostat {
 
     private int id;
     private int temp;
-    private DateTime date;
+    private Timestamp date;
     private String state;
 
     public int getId() {
@@ -32,7 +32,7 @@ public class Report implements Thermostat {
         return date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

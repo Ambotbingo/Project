@@ -43,6 +43,7 @@ static float temp = 64;
 static const char *STATE_URL = "http://18.217.90.61:8080/status";
 static const char *TEMP_URL = "http://18.217.90.61:8080/temp";
 static const char *SETTINGS_URL = "http://18.217.90.61:8080/settings";
+static char  *URLINFO = NULL;
 
 // set params for argp
 static char args_doc[] = "--post --url http://localhost:8000 'argument'\n-o -u http://localhost:8000 'argument'";
@@ -59,13 +60,13 @@ struct Arguments
     bool delete;
 };
 
-struct GetString
+struct GetMessage
 {
     char *response;
     size_t size;
 };
 
-struct GetString chunk = {0};
+struct GetMessage chunk = {0};
 
 // argp options required for output to user
 static struct argp_option options[] = {
@@ -79,7 +80,7 @@ static struct argp_option options[] = {
 static size_t call_back(void *data, size_t size, size_t nmemb, void *userp)
 {
     size_t realsize = size * nmemb;
-    struct GetString *mem = (struct GetString *)userp;
+    struct GetMessage *mem = (struct GetMessage *)userp;
 
     char *ptr = realloc(mem->response, mem->size + realsize + 1);
     if (ptr == NULL)
@@ -97,6 +98,7 @@ static size_t call_back(void *data, size_t size, size_t nmemb, void *userp)
 
 static char *send_http_request(char *url, char *message, char *type, bool verb)
 {
+    URLINFO = url;
     CURL *curl = curl_easy_init();
     if (curl)
     {
@@ -107,14 +109,14 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outputFile);
 
         if (strcmp(type, "GET") == 0)
-        {
+        {            
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, call_back);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);           
         }
 
         if (verb)
         {
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, message);                  
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, message);
         }
         else
         {
@@ -127,14 +129,13 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
             return REQ_ERR;
         }
 
-        curl_easy_cleanup(curl);        
-        fclose(outputFile);
+        curl_easy_cleanup(curl);
+        //fclose(outputFile);
     }
     else
     {
         return NULL;
-    }
-    printf(chunk.response);
+    }   
     return chunk.response;
 }
 
@@ -143,7 +144,6 @@ int handle_requirement_error(char *message, struct argp_state *state)
     argp_usage(state);
     return REQ_ERR;
 }
-
 
 // parse command line options IF not run as a daemon instance
 static error_t parse_opt(int key, char *arg, struct argp_state *state)
@@ -226,10 +226,9 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
 
 static int write_state(char *state)
 {
-    FILE *fp = fopen(STATE_FILENAME, "w");
+    FILE *fp = fopen(STATE_FILENAME, "wb");
     if (fp == NULL)
     {
-        printf("unable to open file for writing\n");
         return ERR_WTF;
     }
     fputs(state, fp);
@@ -238,12 +237,30 @@ static int write_state(char *state)
 }
 
 static void handle_state()
-{
-    char *state = send_http_request(STATE_URL, NULL, "GET", false); 
-    write_state(state); 
+{   
+    char *state = send_http_request(STATE_URL, NULL, "GET", false);
+    if (!state == "" || state != NULL)
+    {       
+        if (strstr(state, "ON"))
+        {
+            write_state("ON");
+        }
+        else if (strstr(state, "OFF"))
+        {
+            write_state("OFF");
+        }
+    }
+
+    else
+    {
+        write_state("ON");
+    }
+    
     chunk.response = NULL;
     chunk.size = NULL;
 }
+
+
 
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
@@ -315,7 +332,7 @@ static void _handle_fork(const pid_t pid)
  * configuring signal handling, and closing standard file
  * descriptors.
  */
-static void _daemonize(void)
+static int daemonize(void)
 {
     // Fork from the parent process.
     pid_t pid = fork();
@@ -348,6 +365,7 @@ static void _daemonize(void)
     {
         close(x);
     }
+    return OK;
 }
 
 /**
@@ -356,21 +374,23 @@ static void _daemonize(void)
  * information, and writes the new temperature to the appropriate
  * location.
  */
-static void _run_simulation(void)
-{
-
+static int run_simulation(void)
+{    
     // It's a bit cold! Note we're using a float in case we want to be
     // more sophisticated with the temperature management in the future.
     // Right now we just use a linear model.
-    tc_heater_state_t heater_state = OFF;
+    tc_heater_state_t *heater_state = OFF;
+    write_state("OFF");
     syslog(LOG_INFO, "beginning thermocouple simulation");
+    
     while (true)
     {
-        handle_state();
-        // Read the heater state.       
+        
+        // Read the heater state.
+        tc_heater_state_t *heater_state = OFF;
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
-        if (err != OK)
-            _exit_process(err);
+        //if (err != OK)
+          //  _exit_process(err);
 
         // Is the heater on? then increase the temperature one degree.
         // Otherwise, it's getting colder!
@@ -383,11 +403,15 @@ static void _run_simulation(void)
         // Write the temp to the file.
         err = tc_write_temperature(TEMP_FILENAME, temp);
         send_http_request(TEMP_URL, buffer, "POST", true);
-        if (err != OK)
-            _exit_process(err);
+        handle_state();
+        //if (err != OK)
+         //  _exit_process(err);
 
-        // Take a bit of a nap.
+        //Take a bit of a nap.
         sleep(SLEEP_DELAY);
+
+        return ERR_WTF;
+        
     }
 }
 
@@ -463,14 +487,17 @@ int main(int argc, char **argv)
     }
     else
     {
-        _daemonize();
+        err = daemonize();
     }
 
     // Set up appropriate files if they don't exist.
     _configure();
 
     // Execute the primary daemon routines.
-    _run_simulation();
+    err = run_simulation();
+    if (err != OK) {
+    return ERR_WTF;
+    }
     return ERR_WTF;
 
     // If we get here, something weird has happened.
