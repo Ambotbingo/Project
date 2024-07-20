@@ -336,6 +336,9 @@ public final class JDBCConnection {
         return DriverManager.getConnection(DB_CONNECTION, ROOT, PASSWORD);
     }
 
+    //parsing time
+    //hour >= 18) MORNING
+    //hour >= 12 AFTERNOON
     private static String parseTimeOfDay() {
     Calendar time = Calendar.getInstance();
     int hour = time.get(Calendar.HOUR_OF_DAY);

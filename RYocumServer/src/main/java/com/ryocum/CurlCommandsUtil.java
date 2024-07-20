@@ -33,8 +33,7 @@ public final class CurlCommandsUtil {
         String route = getRoute(session.getUri());
         String param = cleanValue(session.getUri());
         Gson gson = new Gson();
-        Status stat = new Status();
-        String cStat = null;
+        Status stat = new Status();       
 
         if (route != null) {
             //display temperature
@@ -142,7 +141,10 @@ public final class CurlCommandsUtil {
         String param = cleanValue(session.getUri());
         String route = session.getUri().replace("/", "");
 
-        // if (route.equals(TEMP)) {
+        if (route.equals(TEMP)) {
+        String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
+        return newFixedLengthResponse(result);
+        }
         String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
         return newFixedLengthResponse(result);
 
