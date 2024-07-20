@@ -34,7 +34,7 @@ public final class CurlCommandsUtil {
         String param = cleanValue(session.getUri());
         Gson gson = new Gson();
         Status stat = new Status();
-        String cStat;
+        String cStat = null;
 
         if (route != null) {
             if (route.equals(TEMP)) {
@@ -61,6 +61,7 @@ public final class CurlCommandsUtil {
                 }
                 jsonResp = gson.toJson(stat.getState());
                 String currentStat = stat.getState();
+                cStat = currentStat;
                 return newFixedLengthResponse(currentStat);
             } else if (route.equals(SETTINGS)) {
                 if (param != null && !param.equals("")) {
