@@ -37,6 +37,7 @@ public final class CurlCommandsUtil {
         String cStat = null;
 
         if (route != null) {
+            //display temperature
             if (route.equals(TEMP)) {
                 if (param != null && !param.equals("")) {
                     Temperature temp = JDBCConnection.getTemp(param);
@@ -54,6 +55,7 @@ public final class CurlCommandsUtil {
                     return newFixedLengthResponse(jsonResp);
 
                 }
+                //display status
             } else if (route.equals(STATE)) {
                 stat = JDBCConnection.getState();                
                 if (stat == null) {
@@ -63,6 +65,7 @@ public final class CurlCommandsUtil {
                 String currentStat = stat.getState();
                 cStat = currentStat;
                 return newFixedLengthResponse(currentStat);
+                //Display settings
             } else if (route.equals(SETTINGS)) {
                 if (param != null && !param.equals("")) {
                     Settings setting = JDBCConnection.getSetting(param);
@@ -80,10 +83,10 @@ public final class CurlCommandsUtil {
                     return newFixedLengthResponse(jsonResp);
                 }
             }
+            //Display Report
             else if (route.equals(REPORT)) {
                 Report report = new Report();
-                report = JDBCConnection.getReport();
-                report.setState(cStat);                
+                report = JDBCConnection.getReport();                                
                 Instant now = Instant.now();
                 if (report== null) {
                     return failedAttempt("The GET request has no available thermostat REPORT information.\n");

@@ -35,6 +35,7 @@ public final class JDBCConnection {
         Calendar time = Calendar.getInstance();
         Instant now = Instant.now();        
         report.setTemp(tempNow);
+        report.setState(st.getState());
 
         return report;
     }
