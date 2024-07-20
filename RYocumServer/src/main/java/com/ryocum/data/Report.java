@@ -2,6 +2,7 @@ package com.ryocum.data;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.zone.ZoneOffsetTransitionRule.TimeDefinition;
 import java.util.Date;
 
 
@@ -20,7 +21,7 @@ public class Report implements Thermostat {
         this.id = id;
     }
 
-    public int getTemp() {
+    public float getTemp() {
         return temp;
     }
 
@@ -32,11 +33,11 @@ public class Report implements Thermostat {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public Timestamp setDate(Timestamp date) {
         this.date = date;
     }
 
-    public float getState() {
+    public String getState() {
         return state;
     }
 
