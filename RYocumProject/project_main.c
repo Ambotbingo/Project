@@ -106,16 +106,16 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, type);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outputFile);
-        
+
         if (strcmp(type, "GET") == 0)
         {
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, call_back);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);           
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
         }
 
         if (verb)
         {
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, message);                  
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, message);
         }
         else
         {
@@ -129,11 +129,10 @@ static char *send_http_request(char *url, char *message, char *type, bool verb)
         }
         if (res == CURLE_OK)
         {
-            count = 1 ;
+            count = 1;
         }
 
-
-        curl_easy_cleanup(curl);        
+        curl_easy_cleanup(curl);
         fclose(outputFile);
     }
     else
@@ -149,7 +148,6 @@ int handle_requirement_error(char *message, struct argp_state *state)
     argp_usage(state);
     return REQ_ERR;
 }
-
 
 // parse command line options IF not run as a daemon instance
 static error_t parse_opt(int key, char *arg, struct argp_state *state)
@@ -244,28 +242,30 @@ static int write_state(char *state)
 }
 
 static void handle_state()
-{    
-   
-    char *state = send_http_request(STATE_URL, NULL, "GET", false); 
-    syslog(LOG_INFO,  "%s", chunk.response);
+{
+
+    char *state = send_http_request(STATE_URL, NULL, "GET", false);
+    // syslog(LOG_INFO,  "%s", chunk.response);
     if (chunk.response != NULL)
     {
-    if(strstr,chunk.response,"OFF")
-    {
-        write_state("OFF");
-    }
-    else{
-        write_state("ON");
-    }
-    //write_state(state); 
-    
+        if (strstr(chunk.response, "ON"))
+        {
+            write_state("ON");
+            send_http_request(STATE_URL, "ON", "POST", true);
+        }
+        else
+        {
+            write_state("OFF");
+             send_http_request(STATE_URL, "OFF", "POST", true);
+        }
     }
     else
     {
-     write_state("ON");
+        write_state("ON");
+         send_http_request(STATE_URL, "ON", "POST", true);
     }
     chunk.response = NULL;
-    chunk.size = NULL;  
+    chunk.size = NULL;
 }
 
 static struct argp argp = {options, parse_opt, args_doc, doc};
@@ -389,9 +389,9 @@ static void _run_simulation(void)
     syslog(LOG_INFO, "beginning thermocouple simulation");
     while (true)
     {
-        //tc_heater_state_t heater_state = OFF;        
-        handle_state();  
-        // Read the heater state.       
+        // tc_heater_state_t heater_state = OFF;
+        handle_state();
+        // Read the heater state.
         tc_error_t err = tc_read_state(STATE_FILENAME, &heater_state);
         if (err != OK)
             _exit_process(err);
@@ -406,8 +406,8 @@ static void _run_simulation(void)
 
         // Write the temp to the file.
         err = tc_write_temperature(TEMP_FILENAME, temp);
-        send_http_request(TEMP_URL, buffer, "POST", true);    
-          
+        send_http_request(TEMP_URL, buffer, "POST", true);
+
         if (err != OK)
             _exit_process(err);
         // Take a bit of a nap.

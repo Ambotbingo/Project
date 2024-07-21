@@ -221,9 +221,33 @@ public final class CurlCommandsUtil {
                 temp2 = Float.parseFloat(values[2]);             
             } else {
                 return null;
-            }         
+            }  
+            if(id == 1) 
+            {
+                timeofday = "MORNING";
+            }
+            else if(id == 2)
+            {
+                timeofday = "AFTERNOON";
+            }
+            else if (id ==3)
+            {
+                timeofday = "EVENING";
+            }
+            else
+            {
+                if (value[3] != null)
+                {
                 String newValue = values[3].trim().toUpperCase();
                 timeofday = newValue; 
+                }
+                else
+                {
+                    timeofday = "";
+                }
+            }
+                
+                
             return new Settings(id, temp1, temp2, timeofday);          
         }
         return null;
