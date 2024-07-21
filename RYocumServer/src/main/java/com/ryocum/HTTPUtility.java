@@ -18,14 +18,14 @@ import static fi.iki.elonen.NanoHTTPD.MIME_PLAINTEXT;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 
 
-public final class CurlCommandsUtil {
+public final class HTTPUtility {
 
     private static final String STATE = "status";
     private static final String TEMP = "temp";
     private static final String SETTINGS = "settings";
     private static final String REPORT = "report";
 
-    private CurlCommandsUtil() {
+    private HTTPUtility() {
     }
 
     public static NanoHTTPD.Response performGet(NanoHTTPD.IHTTPSession session) {
