@@ -31,7 +31,7 @@ public final class CurlCommandsUtil {
     public static NanoHTTPD.Response performGet(NanoHTTPD.IHTTPSession session) {
         String jsonResp = null;
         String route = getRoute(session.getUri());
-        String param = cleanValue(session.getUri());
+        String param = clean(session.getUri());
         Gson gson = new Gson();
         Status stat = new Status();       
 
@@ -137,14 +137,18 @@ public final class CurlCommandsUtil {
     }
 
     public static NanoHTTPD.Response performDelete(NanoHTTPD.IHTTPSession session) {
-        String param = cleanValue(session.getUri());
+        String param = clean(session.getUri());
         String route = session.getUri().replace("/", "");
 
         if (route.equals(TEMP)) {
-        String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
+        String result = JDBCConnection.deleteTemp(clean(session.getUri()));
         return newFixedLengthResponse(result);
         }
-        String result = JDBCConnection.deleteTemp(cleanValue(session.getUri()));
+        if (route.equals(SETTINGS)) {
+            String result = JDBCConnection.deleteSetting(clean(session.getUri()));
+            return newFixedLengthResponse(result);
+            }
+        String result = JDBCConnection.deleteTemp(clean(session.getUri()));
         return newFixedLengthResponse(result);
 
         // return failedAttempt("Unable to delete recored temperature. Make sure correct
@@ -180,7 +184,7 @@ public final class CurlCommandsUtil {
           return null;
         }
       }
-    private static String cleanValue(String param) {
+    private static String clean(String param) {
         return param.replaceAll("[^0-9]", "");
     }
 

@@ -33,3 +33,13 @@ curl http://18.217.90.61:8080/<id>
 
 To PUT :
 curl -X PUT http://18.217.90.61:8080/ -d <name>
+
+///////MYSQL CREATED TABLE////////////////////////////////
+
+create table temp ( id int AUTO_INCREMENT PRIMARY KEY, temp FLOAT(32,2), timeDateInfo DATETIME DEFAULT CURRENT_TIMESTAMP)
+create table state ( state VARCHAR(5), timeDateInfo DATETIME DEFAULT CURRENT_TIMESTAMP);
+mysql> create table settings (id int PRIMARY KEY, temp1 FLOAT (32,2), temp2 FLOAT(32,2), timeofday VARCHAR(250)) 
+mysql> insert into settings (id, temp1, temp2, timeofday) values (1, 67,72,'MORNING);
+
+
+
