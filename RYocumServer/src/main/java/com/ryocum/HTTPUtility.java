@@ -18,7 +18,7 @@ import static fi.iki.elonen.NanoHTTPD.MIME_PLAINTEXT;
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 
 
-public final class HTTPUtility {
+public final class TTPUtility {
 
     private static final String STATE = "status";
     private static final String TEMP = "temp";
