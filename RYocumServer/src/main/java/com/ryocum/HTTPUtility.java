@@ -98,7 +98,9 @@ public final class HTTPUtility {
         return failedAttempt(
                 "Please provide a valid URL path to display or update the thermostat information. For example of this path is HTTP://18.217.90.61:8080/status \n\nAvailable paths include the following: \n\nFor the state or status of the thermostat : HTTP://18.217.90.61:8080/status\n"
                         +
-                        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temp\n");
+                        "For the temperature of the thermostat : HTTP://18.217.90.61:8080/temp\n \"For the settings of the thermostat : HTTP://18.217.90.61:8080/settings\n" + //
+                                                        "\"For the report of the thermostat : HTTP://18.217.90.61:8080/report\\n" + //
+                                                                                                                        "");
     }
 
     //Performing the POST request
