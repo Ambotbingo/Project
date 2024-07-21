@@ -236,7 +236,7 @@ public final class CurlCommandsUtil {
             }
             else
             {
-                if (value[3] != null)
+                if (values[3] != null)
                 {
                 String newValue = values[3].trim().toUpperCase();
                 timeofday = newValue; 
