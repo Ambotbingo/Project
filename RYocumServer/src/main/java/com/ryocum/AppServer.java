@@ -4,6 +4,7 @@ import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
 import fi.iki.elonen.NanoHTTPD.Response;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 
 public class AppServer extends NanoHTTPD {
@@ -27,15 +28,15 @@ public class AppServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         if (session.getMethod() == Method.GET) {
-            return CurlCommandsUtil.performGet(session);
+            return HTTPUtility.performGet(session);
         } else if (session.getMethod() == Method.POST) {
-            return CurlCommandsUtil.performPost(session);
+            return HTTPUtility.performPost(session);
         } else if (session.getMethod() == Method.PUT) {
-            return CurlCommandsUtil.performPost(session);
+            return HTTPUtility.performPost(session);
         } else if (session.getMethod() == Method.DELETE) {
-            return CurlCommandsUtil.performDelete(session);
+            return HTTPUtility.performDelete(session);
         }
 
-        return CurlCommandsUtil.failedAttempt("unacceptable request type");
+        return HTTPUtility.failedAttempt("unacceptable request type");
     }
 }
