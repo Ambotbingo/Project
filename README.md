@@ -53,6 +53,15 @@ _____________________________COMMANDS__________________________________
 To display temp in log using qemu: cat /var/log/temp
 To display status in log using qemu: cat /var/log/status
 To display messages in log using qemu: cat /var/log/messages
+To kill the simulation: killall <name>
+Example:killall tcsimd
+
+
+
+_____________TO Kill JAVA SERVER NANOHTTPD____________
+netstat -plten | grep java
+kill -9 <java id>
+
 
 
 
